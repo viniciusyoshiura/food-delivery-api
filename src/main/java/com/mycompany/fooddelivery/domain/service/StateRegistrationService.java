@@ -35,7 +35,8 @@ public class StateRegistrationService {
 	public void remove(Long stateId) {
 		try {
 			stateRepository.deleteById(stateId);
-
+			// ---------- Flushes all pending changes into database
+			stateRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new StateNotFoundException(stateId);
 

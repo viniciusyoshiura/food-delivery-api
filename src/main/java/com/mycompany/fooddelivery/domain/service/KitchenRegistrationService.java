@@ -27,7 +27,8 @@ public class KitchenRegistrationService {
 	public void remove(Long kitchenId) {
 		try {
 			kitchenRepository.deleteById(kitchenId);
-
+			// ---------- Flushes all pending changes into database
+			kitchenRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
 			throw new KitchenNotFoundException(kitchenId);
 
