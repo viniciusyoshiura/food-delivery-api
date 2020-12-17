@@ -50,7 +50,7 @@ public class KitchenControllerIT {
 		RestAssured.basePath = "/kitchens";
 		
 		correctChineseKitchenJson = ResourceUtils.getContentFromResource(
-				"/json/chinese-kitchen.json");
+				"/json/chinese-kitchen-correct.json");
 		
 		// ---------- Clear database before every test
 		databaseCleaner.clearTables();

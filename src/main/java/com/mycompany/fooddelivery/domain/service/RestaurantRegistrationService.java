@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mycompany.fooddelivery.domain.exception.RestaurantNotFoundException;
+import com.mycompany.fooddelivery.domain.model.City;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 import com.mycompany.fooddelivery.domain.repository.RestaurantRepository;
@@ -17,7 +18,10 @@ public class RestaurantRegistrationService {
 
 	@Autowired
 	private KitchenRegistrationService kitchenRegistrationService;
-
+	
+	@Autowired
+	private CityRegistrationService cityRegistrationService;
+	
 	public Restaurant searchOrFail(Long restaurantId) {
 		return restaurantRepository.findById(restaurantId)
 				.orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
@@ -25,10 +29,15 @@ public class RestaurantRegistrationService {
 
 	@Transactional
 	public Restaurant save(Restaurant restaurant) {
+		
 		Long kitchenId = restaurant.getKitchen().getId();
+		Long cityId = restaurant.getAddress().getCity().getId();
+		
 		Kitchen kitchen = kitchenRegistrationService.searchOrFail(kitchenId);
-
+		City city = cityRegistrationService.searchOrFail(cityId);
+		
 		restaurant.setKitchen(kitchen);
+		restaurant.getAddress().setCity(city);
 
 		return restaurantRepository.save(restaurant);
 	}

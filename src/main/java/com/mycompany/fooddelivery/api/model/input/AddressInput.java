@@ -1,32 +1,32 @@
 package com.mycompany.fooddelivery.api.model.input;
 
-import java.math.BigDecimal;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class RestaurantInput {
+public class AddressInput {
 
 	@NotBlank
-	private String name;
+	private String zipCode;
 	
-	@NotNull
-	@PositiveOrZero
-	private BigDecimal shippingFee;
+	@NotBlank
+	private String street;
+	
+	@NotBlank
+	private String number;
+	
+	private String complement;
+	
+	@NotBlank
+	private String district;
 	
 	@Valid
 	@NotNull
-	private KitchenIdInput kitchen;
-	
-	@Valid
-	@NotNull
-	private AddressInput address;
+	private CityIdInput city;
 	
 }

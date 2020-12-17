@@ -4,14 +4,14 @@ create table payment_method (
 	primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table grouping (
+create table groupinge (
 	id bigint not null auto_increment, 
 	name varchar(60) not null, 
 	primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table grouping_permission (
-	grouping_id bigint not null, 
+create table groupinge_permission (
+	groupinge_id bigint not null, 
 	permission_id bigint not null
 ) engine=InnoDB default charset=utf8;
 
@@ -62,17 +62,17 @@ create table user (
 	primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table user_grouping (
+create table user_groupinge (
 	user_id bigint not null, 
-	grouping_id bigint not null
+	groupinge_id bigint not null
 ) engine=InnoDB default charset=utf8;
 
 
-alter table grouping_permission add constraint fk_grouping_permission_permission 
+alter table groupinge_permission add constraint fk_groupinge_permission_permission 
 foreign key (permission_id) references permission (id);
 
-alter table grouping_permission add constraint fk_grouping_permission_grouping 
-foreign key (grouping_id) references grouping (id);
+alter table groupinge_permission add constraint fk_groupinge_permission_groupinge
+foreign key (groupinge_id) references groupinge (id);
 
 alter table product add constraint fk_product_restaurant
 foreign key (restaurant_id) references restaurant (id);
@@ -89,8 +89,8 @@ foreign key (payment_method_id) references payment_method (id);
 alter table restaurant_payment_method add constraint fk_restaurant_payment_method_restaurant 
 foreign key (restaurant_id) references restaurant (id);
 
-alter table user_grouping add constraint fk_user_grouping_grouping 
-foreign key (grouping_id) references grouping (id);
+alter table user_groupinge add constraint fk_user_groupinge_groupinge
+foreign key (groupinge_id) references groupinge (id);
 
-alter table user_grouping add constraint fk_user_grouping_user 
+alter table user_groupinge add constraint fk_user_groupinge_user 
 foreign key (user_id) references user (id);

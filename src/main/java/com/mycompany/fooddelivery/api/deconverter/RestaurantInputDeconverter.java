@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mycompany.fooddelivery.api.model.input.RestaurantInput;
+import com.mycompany.fooddelivery.domain.model.City;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 
@@ -33,6 +34,10 @@ public class RestaurantInputDeconverter {
 		// ---------- In order to avoid org.hibernate.HibernateException: identifier of an instance of 
 		// ---------- com.mycompany.fooddelivery.domain.model.Kitchen was altered from 1 to 2
 		restaurant.setKitchen(new Kitchen());
+		
+		if (restaurant.getAddress() != null) {
+			restaurant.getAddress().setCity(new City());
+		}
 		
 		modelMapper.map(restaurantInput, restaurant);
 	}

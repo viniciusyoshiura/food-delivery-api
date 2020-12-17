@@ -9,7 +9,7 @@ public class CityNotFoundException extends EntityNotFoundException{
     }
 	
 	public CityNotFoundException(Long cityId) {
-        this(String.format("There is not a city registration with code %d %d", cityId));
+        this(String.format("There is not a city registration with code %d", cityId));
     } 
 	
 }

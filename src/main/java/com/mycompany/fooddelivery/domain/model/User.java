@@ -42,8 +42,8 @@ public class User {
     private OffsetDateTime dateRegister;
     
     @ManyToMany
-    @JoinTable(name = "user_grouping", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "grouping_id"))
-    private List<Grouping> groupings = new ArrayList<>();
+    @JoinTable(name = "user_groupinge", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "groupinge_id"))
+    private List<Groupinge> groupinges = new ArrayList<>();
 	
 }

@@ -4,14 +4,14 @@ delete from city;
 delete from kitchen;
 delete from state;
 delete from payment_method;
-delete from grouping;
-delete from grouping_permission;
+delete from groupinge;
+delete from groupinge_permission;
 delete from permission;
 delete from product;
 delete from restaurant;
 delete from restaurant_payment_method;
 delete from user;
-delete from user_grouping;
+delete from user_groupinge;
 
 set foreign_key_checks = 1;
 
@@ -19,8 +19,8 @@ alter table city auto_increment = 1;
 alter table kitchen auto_increment = 1;
 alter table state auto_increment = 1;
 alter table payment_method auto_increment = 1;
-alter table grouping auto_increment = 1;
-alter table grouping_permission auto_increment = 1;
+alter table groupinge auto_increment = 1;
+alter table groupinge_permission auto_increment = 1;
 alter table product auto_increment = 1;
 alter table restaurant auto_increment = 1;
 alter table user auto_increment = 1;
@@ -72,3 +72,5 @@ insert into product (name, description, price, active, restaurant_id) values ('T
 insert into product (name, description, price, active, restaurant_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
 
 insert into product (name, description, price, active, restaurant_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
+
+insert into groupinge (name) values ('Manager'), ('Salesman'), ('Secretary'), ('Register');

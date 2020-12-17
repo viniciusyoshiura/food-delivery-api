@@ -27,6 +27,7 @@ import com.mycompany.fooddelivery.api.model.input.RestaurantInput;
 import com.mycompany.fooddelivery.core.utils.ObjectMergeUtils;
 import com.mycompany.fooddelivery.core.utils.ValidationUtils;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
+import com.mycompany.fooddelivery.domain.exception.CityNotFoundException;
 import com.mycompany.fooddelivery.domain.exception.KitchenNotFoundException;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 import com.mycompany.fooddelivery.domain.repository.RestaurantRepository;
@@ -78,7 +79,7 @@ public class RestaurantController {
 			Restaurant restaurant = restaurantInputDeconverter.toDomainObject(restaurantInput);
 			
 			return restaurantDTOConverter.toModel(restaurantRegistrationService.save(restaurant));
-		} catch (KitchenNotFoundException e) {
+		} catch (KitchenNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 	}
