@@ -74,3 +74,8 @@ insert into product (name, description, price, active, restaurant_id) values ('S
 insert into product (name, description, price, active, restaurant_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 insert into groupinge (name) values ('Manager'), ('Salesman'), ('Secretary'), ('Register');
+
+insert into user (id, name, email, password, date_register) values (1, 'João da Silva', 'joao.ger@gmail.com', '123', utc_timestamp);
+insert into user (id, name, email, password, date_register) values (2, 'Maria Joaquina', 'maria.vnd@gmail.com', '123', utc_timestamp);
+insert into user (id, name, email, password, date_register) values (3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp);
+insert into user (id, name, email, password, date_register) values (4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);

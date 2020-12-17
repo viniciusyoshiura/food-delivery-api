@@ -46,4 +46,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "groupinge_id"))
     private List<Groupinge> groupinges = new ArrayList<>();
 	
+    public boolean passwordEquals(String password) {
+        return getPassword().equals(password);
+    }
+
+    public boolean passwordNotEquals(String password) {
+        return !passwordEquals(password);
+    }
+    
 }
