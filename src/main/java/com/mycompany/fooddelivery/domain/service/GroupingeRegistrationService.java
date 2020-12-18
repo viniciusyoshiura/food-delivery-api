@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mycompany.fooddelivery.domain.exception.EntityInUseException;
 import com.mycompany.fooddelivery.domain.exception.GroupingeNotFoundException;
 import com.mycompany.fooddelivery.domain.model.Groupinge;
+import com.mycompany.fooddelivery.domain.model.Permission;
 import com.mycompany.fooddelivery.domain.repository.GroupingeRepository;
 
 @Service
@@ -19,7 +20,10 @@ public class GroupingeRegistrationService {
 
 	@Autowired
 	private GroupingeRepository groupingeRepository;
-
+	
+	@Autowired
+	private PermissionRegistrationService permissionRegistrationService;
+	
 	@Transactional
 	public Groupinge save(Groupinge groupinge) {
 		return groupingeRepository.save(groupinge);
@@ -42,5 +46,22 @@ public class GroupingeRegistrationService {
 	public Groupinge searchOrFail(Long groupingeId) {
 		return groupingeRepository.findById(groupingeId).orElseThrow(() -> new GroupingeNotFoundException(groupingeId));
 	}
+	
+	@Transactional
+	public void disassociatePermission(Long groupingeId, Long permissionId) {
+		Groupinge groupinge = searchOrFail(groupingeId);
+	    Permission permission = permissionRegistrationService.searchOrFail(permissionId);
+	    
+	    groupinge.removePermission(permission);
+	}
 
+	@Transactional
+	public void associatePermission(Long groupingeId, Long permissionId) {
+	    Groupinge groupinge = searchOrFail(groupingeId);
+	    Permission permission = permissionRegistrationService.searchOrFail(permissionId);
+	    
+	    groupinge.addPermission(permission);
+	} 
+	
+	
 }

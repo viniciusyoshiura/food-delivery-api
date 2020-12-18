@@ -58,24 +58,26 @@ insert into permission (id, name, description) values (2, 'EDIT_KITCHENS', 'Allo
 
 insert into restaurant_payment_method (restaurant_id, payment_method_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
-insert into product (name, description, price, active, restaurant_id) values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
-insert into product (name, description, price, active, restaurant_id) values ('Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);
+insert into product (name, description, price, active, restaurant_id) values ('Pork with sweet and sour sauce', 'Delicious pork in special sauce', 78.90, 1, 1);
+insert into product (name, description, price, active, restaurant_id) values ('Thai shrimp', '16 large prawns in hot sauce', 110, 1, 1);
 
-insert into product (name, description, price, active, restaurant_id) values ('Salada picante com carne grelhada', 'Salada de folhas com cortes finos de carne bovina grelhada e nosso molho especial de pimenta vermelha', 87.20, 1, 2);
+insert into product (name, description, price, active, restaurant_id) values ('Spicy salad with grilled meat', 'Leaf salad with fine cuts of grilled beef and our special red pepper sauce', 87.20, 1, 2);
 
-insert into product (name, description, price, active, restaurant_id) values ('Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 3);
-insert into product (name, description, price, active, restaurant_id) values ('Murg Curry', 'Cubos de frango preparados com molho curry e especiarias', 43, 1, 3);
+insert into product (name, description, price, active, restaurant_id) values ('Garlic Naan', 'Traditional Indian bread with garlic topping', 21, 1, 3);
+insert into product (name, description, price, active, restaurant_id) values ('Murg Curry', 'Chicken cubes prepared with curry sauce and spices', 43, 1, 3);
 
-insert into product (name, description, price, active, restaurant_id) values ('Bife Ancho', 'Corte macio e suculento, com dois dedos de espessura, retirado da parte dianteira do contrafilé', 79, 1, 4);
-insert into product (name, description, price, active, restaurant_id) values ('T-Bone', 'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89, 1, 4);
+insert into product (name, description, price, active, restaurant_id) values ('Ancho steak', 'Smooth and juicy cut, with two fingers thick, removed from the front of the fillet', 79, 1, 4);
+insert into product (name, description, price, active, restaurant_id) values ('T-Bone', 'Very tasty cut, with a T-shaped bone, with the tender loin on one side and the mignon fillet on the other', 89, 1, 4);
 
-insert into product (name, description, price, active, restaurant_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
+insert into product (name, description, price, active, restaurant_id) values ('X-Tudo sandwich', 'Sandwich with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 
-insert into product (name, description, price, active, restaurant_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
+insert into product (name, description, price, active, restaurant_id) values ('Termite Skewer', 'Accompanies farofa, cassava and vinaigrette', 8, 1, 6);
 
-insert into groupinge (name) values ('Manager'), ('Salesman'), ('Secretary'), ('Register');
+insert into groupinge (id, name) values (1, 'Manager'), (2, 'Salesman'), (3, 'Secretary'), (4, 'Register');
 
 insert into user (id, name, email, password, date_register) values (1, 'João da Silva', 'joao.ger@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (2, 'Maria Joaquina', 'maria.vnd@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
+
+insert into groupinge_permission (groupinge_id , permission_id ) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
