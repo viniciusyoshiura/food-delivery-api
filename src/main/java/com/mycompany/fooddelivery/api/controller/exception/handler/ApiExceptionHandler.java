@@ -31,6 +31,7 @@ import com.mycompany.fooddelivery.core.validation.exception.ValidationException;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityInUseException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
+import com.mycompany.fooddelivery.domain.exception.RestaurantNotFoundException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -45,8 +46,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
-		String detail = END_USER_GENERIC_ERROR_MESSAGE;
-
+		String detail = e.getMessage();
+		
 		e.printStackTrace();
 
 		Problem problem = createProblemBuilder(status, problemType, detail, detail, null);

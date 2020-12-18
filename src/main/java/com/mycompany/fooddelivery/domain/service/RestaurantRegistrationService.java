@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mycompany.fooddelivery.domain.exception.RestaurantNotFoundException;
 import com.mycompany.fooddelivery.domain.model.City;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
+import com.mycompany.fooddelivery.domain.model.PaymentMethod;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 import com.mycompany.fooddelivery.domain.repository.RestaurantRepository;
 
@@ -21,6 +22,9 @@ public class RestaurantRegistrationService {
 	
 	@Autowired
 	private CityRegistrationService cityRegistrationService;
+	
+	@Autowired
+	private PaymentMethodRegistrationService paymentMethodRegistrationService;
 	
 	public Restaurant searchOrFail(Long restaurantId) {
 		return restaurantRepository.findById(restaurantId)
@@ -54,6 +58,22 @@ public class RestaurantRegistrationService {
 		Restaurant currentRestaurant = searchOrFail(restaurantId);
 		
 		currentRestaurant.deactivate();
+	}
+	
+	@Transactional
+	public void disassociatePaymentMethod(Long restaurantId, Long paymentMethodId) {
+		Restaurant restaurant = searchOrFail(restaurantId);
+		PaymentMethod paymentMethod = paymentMethodRegistrationService.searchOrFail(paymentMethodId);
+		
+		restaurant.removePaymentMethod(paymentMethod);
+	}
+	
+	@Transactional
+	public void associatePaymentMethod(Long restaurantId, Long paymentMethodId) {
+		Restaurant restaurant = searchOrFail(restaurantId);
+		PaymentMethod paymentMethod = paymentMethodRegistrationService.searchOrFail(paymentMethodId);
+		
+		restaurant.insertPaymentMethod(paymentMethod);
 	}
 	
 }

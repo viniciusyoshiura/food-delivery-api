@@ -3,7 +3,6 @@ package com.mycompany.fooddelivery.domain.service;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,9 @@ import com.mycompany.fooddelivery.domain.repository.UserRepository;
 public class UserRegistrationService {
 
 	private static final String MSG_USER_IN_USE = "User with code %d could not be removed, since it is in use";
-
+	private static final String MSG_EMAIL_IN_USE = "There is already a user registered with the email %s";
+	private static final String MSG_PASSWORD_MISMATCH = "Current password entered does not match the user's password.";
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -38,7 +39,7 @@ public class UserRegistrationService {
 
 		if (existingUser.isPresent() && !existingUser.get().equals(user)) {
 			throw new BusinessException(
-					String.format("There is already a user registered with the email %s", user.getEmail()));
+					String.format(MSG_EMAIL_IN_USE, user.getEmail()));
 		}
 
 		return userRepository.save(user);
@@ -49,7 +50,7 @@ public class UserRegistrationService {
 		User user = searchOrFail(userId);
 
 		if (user.passwordNotEquals(currentPassword)) {
-			throw new BusinessException("Current password entered does not match the user's password.");
+			throw new BusinessException(MSG_PASSWORD_MISMATCH);
 		}
 
 		user.setPassword(newPassword);

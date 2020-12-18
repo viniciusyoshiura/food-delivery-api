@@ -1,5 +1,6 @@
 package com.mycompany.fooddelivery.api.converter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,8 @@ public class PaymentMethodDTOConverter {
         return modelMapper.map(paymentMethod, PaymentMethodDTO.class);
     }
     
-    public List<PaymentMethodDTO> toCollectionModel(List<PaymentMethod> paymentMethods) {
+    // ---------- @Param collections accepts List and Set
+    public List<PaymentMethodDTO> toCollectionModel(Collection<PaymentMethod> paymentMethods) {
         return paymentMethods.stream()
                 .map(paymentMethod -> toModel(paymentMethod))
                 .collect(Collectors.toList());
