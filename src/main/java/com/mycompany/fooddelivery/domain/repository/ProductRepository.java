@@ -1,0 +1,21 @@
+package com.mycompany.fooddelivery.domain.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.mycompany.fooddelivery.domain.model.Product;
+import com.mycompany.fooddelivery.domain.model.Restaurant;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Query("from Product where restaurant.id = :restaurantId and id = :productId")
+    Optional<Product> findById(@Param("restaurantId") Long restaurantId, 
+            @Param("productId") Long productId);
+    
+    List<Product> findByRestaurant(Restaurant restaurant);
+}        
+
