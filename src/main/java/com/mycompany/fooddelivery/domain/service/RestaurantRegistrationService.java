@@ -9,6 +9,7 @@ import com.mycompany.fooddelivery.domain.model.City;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
 import com.mycompany.fooddelivery.domain.model.PaymentMethod;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
+import com.mycompany.fooddelivery.domain.model.User;
 import com.mycompany.fooddelivery.domain.repository.RestaurantRepository;
 
 @Service
@@ -25,6 +26,9 @@ public class RestaurantRegistrationService {
 	
 	@Autowired
 	private PaymentMethodRegistrationService paymentMethodRegistrationService;
+	
+	@Autowired
+	private UserRegistrationService userRegistrationService;
 	
 	public Restaurant searchOrFail(Long restaurantId) {
 		return restaurantRepository.findById(restaurantId)
@@ -88,6 +92,22 @@ public class RestaurantRegistrationService {
 		PaymentMethod paymentMethod = paymentMethodRegistrationService.searchOrFail(paymentMethodId);
 		
 		restaurant.insertPaymentMethod(paymentMethod);
+	}
+	
+	@Transactional
+	public void disassociateResponsible(Long restaurantId, Long userId) {
+	    Restaurant restaurant = searchOrFail(restaurantId);
+	    User user = userRegistrationService.searchOrFail(userId);
+	    
+	    restaurant.removeResponsible(user);
+	}
+
+	@Transactional
+	public void associateResponsible(Long restaurantId, Long userId) {
+	    Restaurant restaurant = searchOrFail(restaurantId);
+	    User user = userRegistrationService.searchOrFail(userId);
+	    
+	    restaurant.addResponsible(user);
 	}
 	
 }

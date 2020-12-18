@@ -12,6 +12,7 @@ delete from restaurant;
 delete from restaurant_payment_method;
 delete from user;
 delete from user_groupinge;
+delete from restaurant_responsible_user;
 
 set foreign_key_checks = 1;
 
@@ -79,7 +80,10 @@ insert into user (id, name, email, password, date_register) values (1, 'João da
 insert into user (id, name, email, password, date_register) values (2, 'Maria Joaquina', 'maria.vnd@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
+insert into user (id, name, email, password, date_register) values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into groupinge_permission (groupinge_id , permission_id ) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into user_groupinge (user_id, groupinge_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);

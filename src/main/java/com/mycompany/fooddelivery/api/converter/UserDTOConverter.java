@@ -1,5 +1,6 @@
 package com.mycompany.fooddelivery.api.converter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UserDTOConverter {
         return modelMapper.map(user, UserDTO.class);
     }
     
-    public List<UserDTO> toCollectionModel(List<User> users) {
+    public List<UserDTO> toCollectionModel(Collection<User> users) {
         return users.stream()
                 .map(user -> toModel(user))
                 .collect(Collectors.toList());
