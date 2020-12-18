@@ -68,6 +68,8 @@ public class Restaurant {
 	
 	private Boolean active = Boolean.TRUE;
 	
+	private Boolean open = Boolean.FALSE;
+	
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dateRegister;
@@ -101,4 +103,12 @@ public class Restaurant {
 	public boolean insertPaymentMethod(PaymentMethod paymentMethod) {
 		return getPaymentMethods().add(paymentMethod);
 	}
+	
+	public void open() {
+	    setOpen(true);
+	}
+
+	public void close() {
+	    setOpen(false);
+	}  
 }
