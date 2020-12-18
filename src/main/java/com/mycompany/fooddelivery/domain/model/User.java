@@ -1,8 +1,8 @@
 package com.mycompany.fooddelivery.domain.model;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,7 +44,7 @@ public class User {
     @ManyToMany
     @JoinTable(name = "user_groupinge", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "groupinge_id"))
-    private List<Groupinge> groupinges = new ArrayList<>();
+    private Set<Groupinge> groupinges = new HashSet<>();
 	
     public boolean passwordEquals(String password) {
         return getPassword().equals(password);
@@ -52,6 +52,14 @@ public class User {
 
     public boolean passwordNotEquals(String password) {
         return !passwordEquals(password);
+    }
+    
+    public boolean removeGroupinge(Groupinge groupinge) {
+        return getGroupinges().remove(groupinge);
+    }
+
+    public boolean addGroupinge(Groupinge groupinge) {
+        return getGroupinges().add(groupinge);
     }
     
 }

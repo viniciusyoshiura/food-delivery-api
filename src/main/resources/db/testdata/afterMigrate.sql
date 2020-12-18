@@ -81,3 +81,5 @@ insert into user (id, name, email, password, date_register) values (3, 'José So
 insert into user (id, name, email, password, date_register) values (4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
 
 insert into groupinge_permission (groupinge_id , permission_id ) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+insert into user_groupinge (user_id, groupinge_id) values (1, 1), (1, 2), (2, 2);

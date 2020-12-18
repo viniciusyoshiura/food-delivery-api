@@ -1,5 +1,6 @@
 package com.mycompany.fooddelivery.api.converter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class GroupingeDTOConverter {
         return modelMapper.map(group, GroupingeDTO.class);
     }
     
-    public List<GroupingeDTO> toCollectionModel(List<Groupinge> groups) {
+    public List<GroupingeDTO> toCollectionModel(Collection<Groupinge> groups) {
         return groups.stream()
                 .map(group -> toModel(group))
                 .collect(Collectors.toList());

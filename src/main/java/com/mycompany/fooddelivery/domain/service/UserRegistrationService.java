@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityInUseException;
 import com.mycompany.fooddelivery.domain.exception.UserNotFoundException;
+import com.mycompany.fooddelivery.domain.model.Groupinge;
 import com.mycompany.fooddelivery.domain.model.User;
 import com.mycompany.fooddelivery.domain.repository.UserRepository;
 
@@ -28,6 +29,9 @@ public class UserRegistrationService {
 	
 	@Autowired
 	private EntityManager manager;
+	
+	@Autowired
+	private GroupingeRegistrationService groupingeRegistrationService;
 	
 	@Transactional
 	public User save(User user) {
@@ -72,6 +76,22 @@ public class UserRegistrationService {
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(String.format(MSG_USER_IN_USE, userRepository));
 		}
+	}
+	
+	@Transactional
+	public void disassociateGroup(Long userId, Long groupingeId) {
+	    User user = searchOrFail(userId);
+	    Groupinge groupinge = groupingeRegistrationService.searchOrFail(groupingeId);
+	    
+	    user.removeGroupinge(groupinge);
+	}
+
+	@Transactional
+	public void associateGroup(Long userId, Long groupingeId) {
+	    User user = searchOrFail(userId);
+	    Groupinge groupinge = groupingeRegistrationService.searchOrFail(groupingeId);
+	    
+	    user.addGroupinge(groupinge);
 	}
 
 }
