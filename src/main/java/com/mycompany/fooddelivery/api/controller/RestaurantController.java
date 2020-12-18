@@ -29,6 +29,7 @@ import com.mycompany.fooddelivery.core.utils.ValidationUtils;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.CityNotFoundException;
 import com.mycompany.fooddelivery.domain.exception.KitchenNotFoundException;
+import com.mycompany.fooddelivery.domain.exception.RestaurantNotFoundException;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 import com.mycompany.fooddelivery.domain.repository.RestaurantRepository;
 import com.mycompany.fooddelivery.domain.service.RestaurantRegistrationService;
@@ -128,6 +129,26 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deactivate(@PathVariable Long restaurantId) {
 		restaurantRegistrationService.deactivate(restaurantId);
+	}
+	
+	@PutMapping("/activations")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void activateMultiple(@RequestBody List<Long> restaurantIds) {
+		try {
+			restaurantRegistrationService.activate(restaurantIds);
+		} catch (RestaurantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
+	}
+	
+	@DeleteMapping("/activations")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deactivateMultiple(@RequestBody List<Long> restaurantIds) {
+		try {
+			restaurantRegistrationService.deactivate(restaurantIds);
+		} catch (RestaurantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
 	}
 	
 	@PutMapping("/{restaurantId}/opening")

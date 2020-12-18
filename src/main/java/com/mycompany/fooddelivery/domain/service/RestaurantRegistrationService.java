@@ -1,5 +1,7 @@
 package com.mycompany.fooddelivery.domain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +64,16 @@ public class RestaurantRegistrationService {
 		Restaurant currentRestaurant = searchOrFail(restaurantId);
 		
 		currentRestaurant.deactivate();
+	}
+	
+	@Transactional
+	public void activate(List<Long> restaurantIds) {
+		restaurantIds.forEach(this::activate);
+	}
+	
+	@Transactional
+	public void deactivate(List<Long> restaurantIds) {
+		restaurantIds.forEach(this::deactivate);
 	}
 	
 	@Transactional
