@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -17,9 +18,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.model.enumerator.StatusPurchaseOrder;
 
 import lombok.Data;
@@ -34,6 +37,8 @@ public class PurchaseOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	private String uuid;
 	
 	private BigDecimal subtotal;
     private BigDecimal shippingFee;
@@ -85,4 +90,35 @@ public class PurchaseOrder {
     public void assignOrderToItems() {
         getItems().forEach(item -> item.setPurchaseOrder(this));
     }
+    
+    public void confirm() {
+		setStatus(StatusPurchaseOrder.CONFIRMED);
+		setDateConfirmation(OffsetDateTime.now());
+	}
+	
+	public void deliver() {
+		setStatus(StatusPurchaseOrder.DELIVERED);
+		setDateDelivery(OffsetDateTime.now());
+	}
+	
+	public void cancel() {
+		setStatus(StatusPurchaseOrder.CANCELED);
+		setDateCancellation(OffsetDateTime.now());
+	}
+	
+	private void setStatus(StatusPurchaseOrder newStatusPurchaseOrder) {
+		if (getStatus().cannotUpdateTo(newStatusPurchaseOrder)) {
+			throw new BusinessException(
+					String.format("Order status with uuid %s could not be updated from %s to %s",
+							getUuid(), getStatus().getDescription(), 
+							newStatusPurchaseOrder.getDescription()));
+		}
+		
+		this.status = newStatusPurchaseOrder;
+	}
+	
+	@PrePersist
+	private void generateUuid() {
+		setUuid(UUID.randomUUID().toString());
+	}
 }

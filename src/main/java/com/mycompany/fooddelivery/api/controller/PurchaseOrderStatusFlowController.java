@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mycompany.fooddelivery.domain.service.PurchaseOrderStatusFlowService;
 
 @RestController
-@RequestMapping(value = "/purchase-orders/{purchaseOrderId}")
+@RequestMapping(value = "/purchase-orders/{purchaseOrderUuid}")
 public class PurchaseOrderStatusFlowController {
 
 	@Autowired
@@ -19,20 +19,20 @@ public class PurchaseOrderStatusFlowController {
 	
 	@PutMapping("/confirmation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirmar(@PathVariable Long purchaseOrderId) {
-		purchaseOrderStatusFlowService.confirm(purchaseOrderId);
+	public void confirmar(@PathVariable String purchaseOrderUuid) {
+		purchaseOrderStatusFlowService.confirm(purchaseOrderUuid);
 	}
 	
 	@PutMapping("/cancellation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancelar(@PathVariable Long purchaseOrderId) {
-		purchaseOrderStatusFlowService.cancel(purchaseOrderId);
+	public void cancelar(@PathVariable String purchaseOrderUuid) {
+		purchaseOrderStatusFlowService.cancel(purchaseOrderUuid);
 	}
 
 	@PutMapping("/delivery")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void entregar(@PathVariable Long purchaseOrderId) {
-		purchaseOrderStatusFlowService.deliver(purchaseOrderId);
+	public void entregar(@PathVariable String purchaseOrderUuid) {
+		purchaseOrderStatusFlowService.deliver(purchaseOrderUuid);
 	}
 	
 }

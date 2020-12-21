@@ -1,6 +1,7 @@
 package com.mycompany.fooddelivery.domain.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +14,7 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 
 	@Query("from PurchaseOrder p join fetch p.user join fetch p.restaurant r join fetch r.kitchen")
 	List<PurchaseOrder> findAll();
+	
+	Optional<PurchaseOrder> findByUuid(String uuid);
 	
 }

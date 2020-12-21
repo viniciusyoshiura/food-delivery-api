@@ -92,12 +92,12 @@ insert into user_groupinge (user_id, groupinge_id) values (1, 1), (1, 2), (2, 2)
 
 insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);
 
-insert into purchase_order (id, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (1, 1, 1, 1, 1, '14098-583', 'Rua Walter Leite de Souza', '680', 'Ap 201', 'Centro', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
+insert into purchase_order (id, uuid, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (1, 'cd056061-46dc-4bbb-8a7a-85e9e8e8196c', 1, 1, 1, 1, '14098-583', 'Rua Walter Leite de Souza', '680', 'Ap 201', 'Centro', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
 
 insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (1, 1, 1, 1, 78.9, 78.9, null);
 
 insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (2, 1, 2, 2, 110, 220, 'Less spicy, please');
 
-insert into purchase_order (id, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (2, 4, 1, 2, 1, '14027-125', 'Rua Giselda de Mello Silva', '300', 'Casa 2', 'Jardim Nova Aliança Sul', 'CREATED', utc_timestamp, 79, 0, 79);
+insert into purchase_order (id, uuid, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (2, 'd4ecb71b-09a4-4f8b-bafd-4c3855d39673', 4, 1, 2, 1, '14027-125', 'Rua Giselda de Mello Silva', '300', 'Casa 2', 'Jardim Nova Aliança Sul', 'CREATED', utc_timestamp, 79, 0, 79);
 
 insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (3, 2, 6, 1, 79, 79, 'Medium rare');

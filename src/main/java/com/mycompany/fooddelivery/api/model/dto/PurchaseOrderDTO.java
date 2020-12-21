@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 public class PurchaseOrderDTO {
 
-	private Long id;
+	private String uuid;
     private BigDecimal subtotal;
     private BigDecimal shippingFee;
     private BigDecimal totalValue;

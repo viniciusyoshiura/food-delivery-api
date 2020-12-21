@@ -38,9 +38,9 @@ public class PurchaseOrderIssuanceService {
 	@Autowired
 	private PaymentMethodRegistrationService paymentMethodRegistrationService;
 	
-    public PurchaseOrder searchOrFail(Long purchaseOrderId) {
-        return purchaseOrderRepository.findById(purchaseOrderId)
-            .orElseThrow(() -> new PurchaseOrderNotFoundException(purchaseOrderId));
+    public PurchaseOrder searchOrFail(String purchaseOrderUuid) {
+        return purchaseOrderRepository.findByUuid(purchaseOrderUuid)
+            .orElseThrow(() -> new PurchaseOrderNotFoundException(purchaseOrderUuid));
     }   
 
     @Transactional

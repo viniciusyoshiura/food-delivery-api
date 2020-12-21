@@ -53,9 +53,9 @@ public class PurchaseOrderController {
         return purchaseOrderSummaryDTOConverter.toCollectionModel(allPurchaseOrders);
     }
     
-    @GetMapping("/{purchaseOrderId}")
-    public PurchaseOrderDTO search(@PathVariable Long purchaseOrderId) {
-    	PurchaseOrder purchaseOrder = purchaseOrderIssuanceService.searchOrFail(purchaseOrderId);
+    @GetMapping("/{purchaseOrderUuid}")
+    public PurchaseOrderDTO search(@PathVariable String purchaseOrderUuid) {
+    	PurchaseOrder purchaseOrder = purchaseOrderIssuanceService.searchOrFail(purchaseOrderUuid);
         
         return purchaseOrderDTOConverter.toModel(purchaseOrder);
     }
