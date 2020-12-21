@@ -23,4 +23,16 @@ public class PurchaseOrderStatusFlowController {
 		purchaseOrderStatusFlowService.confirm(purchaseOrderId);
 	}
 	
+	@PutMapping("/cancellation")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void cancelar(@PathVariable Long purchaseOrderId) {
+		purchaseOrderStatusFlowService.cancel(purchaseOrderId);
+	}
+
+	@PutMapping("/delivery")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void entregar(@PathVariable Long purchaseOrderId) {
+		purchaseOrderStatusFlowService.deliver(purchaseOrderId);
+	}
+	
 }

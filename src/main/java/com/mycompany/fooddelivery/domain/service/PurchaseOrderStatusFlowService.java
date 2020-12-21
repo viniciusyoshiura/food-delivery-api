@@ -34,4 +34,33 @@ public class PurchaseOrderStatusFlowService {
 		purchaseOrder.setDateConfirmation(OffsetDateTime.now());
 	}
 	
+	@Transactional
+	public void cancel(Long purchaseOrderId) {
+		PurchaseOrder purchaseOrder = purchaseOrderIssuanceService.searchOrFail(purchaseOrderId);
+	    
+	    if (!purchaseOrder.getStatus().equals(StatusPurchaseOrder.CREATED)) {
+	        throw new BusinessException(
+	                String.format(MSG_STATUS_UPDATED_ERROR,
+	                		purchaseOrder.getId(), purchaseOrder.getStatus().getDescription(), 
+	                		StatusPurchaseOrder.CANCELED.getDescription()));
+	    }
+	    
+	    purchaseOrder.setStatus(StatusPurchaseOrder.CANCELED);
+	    purchaseOrder.setDateCancellation(OffsetDateTime.now());
+	}
+	
+	@Transactional
+	public void deliver(Long purchaseOrderId) {
+		PurchaseOrder purchaseOrder = purchaseOrderIssuanceService.searchOrFail(purchaseOrderId);
+	    
+	    if (!purchaseOrder.getStatus().equals(StatusPurchaseOrder.CONFIRMED)) {
+	        throw new BusinessException(
+	                String.format(MSG_STATUS_UPDATED_ERROR,
+	                		purchaseOrder.getId(), purchaseOrder.getStatus().getDescription(), 
+	                        StatusPurchaseOrder.DELIVERED.getDescription()));
+	    }
+	    
+	    purchaseOrder.setStatus(StatusPurchaseOrder.DELIVERED);
+	    purchaseOrder.setDateDelivery(OffsetDateTime.now());
+	}
 }
