@@ -13,6 +13,8 @@ delete from restaurant_payment_method;
 delete from user;
 delete from user_groupinge;
 delete from restaurant_responsible_user;
+delete from purchase_order;
+delete from item_purchase_order;
 
 set foreign_key_checks = 1;
 
@@ -25,6 +27,8 @@ alter table groupinge_permission auto_increment = 1;
 alter table product auto_increment = 1;
 alter table restaurant auto_increment = 1;
 alter table user auto_increment = 1;
+alter table purchase_order auto_increment = 1;
+alter table item_purchase_order auto_increment = 1;
 
 insert into kitchen (name) values ('Thai');
 insert into kitchen (name) values ('Indian');
@@ -87,3 +91,13 @@ insert into groupinge_permission (groupinge_id , permission_id ) values (1, 1), 
 insert into user_groupinge (user_id, groupinge_id) values (1, 1), (1, 2), (2, 2);
 
 insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);
+
+insert into purchase_order (id, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (1, 1, 1, 1, 1, '14098-583', 'Rua Walter Leite de Souza', '680', 'Ap 201', 'Centro', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
+
+insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (1, 1, 1, 1, 78.9, 78.9, null);
+
+insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (2, 1, 2, 2, 110, 220, 'Less spicy, please');
+
+insert into purchase_order (id, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (2, 4, 1, 2, 1, '14027-125', 'Rua Giselda de Mello Silva', '300', 'Casa 2', 'Jardim Nova Aliança Sul', 'CREATED', utc_timestamp, 79, 0, 79);
+
+insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (3, 2, 6, 1, 79, 79, 'Medium rare');

@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.mycompany.fooddelivery.api.model.dto.AddressDTO;
+import com.mycompany.fooddelivery.api.model.input.ItemPurchaseOrderInput;
 import com.mycompany.fooddelivery.domain.model.Address;
+import com.mycompany.fooddelivery.domain.model.ItemPurchaseOrder;
 
 @Configuration
 public class ModelMapperConfig {
@@ -21,6 +23,10 @@ public class ModelMapperConfig {
 		addressToAddressDTOTypeMap.<String>addMapping(
 				addressSrc -> addressSrc.getCity().getState().getName(),
 				(addressDTODest, value) -> addressDTODest.getCity().setState(value));
+		
+		// ---------- Skip ItemPurchaseOrder setId
+		modelMapper.createTypeMap(ItemPurchaseOrderInput.class, ItemPurchaseOrder.class)
+	    .addMappings(mapper -> mapper.skip(ItemPurchaseOrder::setId)); 
 		
 		return modelMapper;
 	}

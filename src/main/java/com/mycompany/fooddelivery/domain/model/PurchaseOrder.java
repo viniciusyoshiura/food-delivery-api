@@ -5,8 +5,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +42,8 @@ public class PurchaseOrder {
     @Embedded
     private Address deliverAddress;
     
-    private StatusPurchaseOrder status;
+    @Enumerated(EnumType.STRING)
+    private StatusPurchaseOrder status = StatusPurchaseOrder.CREATED;
     
     @CreationTimestamp
     private OffsetDateTime dateRegister;
@@ -47,7 +52,7 @@ public class PurchaseOrder {
     private OffsetDateTime dateCancellation;
     private OffsetDateTime dateDelivery;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private PaymentMethod paymentMethod;
     
@@ -59,6 +64,25 @@ public class PurchaseOrder {
     @JoinColumn(name = "user_client_id", nullable = false)
     private User user;
     
-    @OneToMany(mappedBy = "purchaseOrder")
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
     private List<ItemPurchaseOrder> items = new ArrayList<>();
+    
+    public void calculateTotalValue() {
+    	
+    	getItems().forEach(ItemPurchaseOrder::calculateTotalPrice);
+    	
+        this.subtotal = getItems().stream()
+            .map(item -> item.getTotalPrice())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        this.totalValue = this.subtotal.add(this.shippingFee);
+    }
+
+    public void defineShippingFee() {
+        setShippingFee(getRestaurant().getShippingFee());
+    }
+
+    public void assignOrderToItems() {
+        getItems().forEach(item -> item.setPurchaseOrder(this));
+    }
 }

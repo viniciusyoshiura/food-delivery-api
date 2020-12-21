@@ -125,4 +125,12 @@ public class Restaurant {
 	public boolean addResponsible(User user) {
 	    return getResponsibles().add(user);
 	}
+	
+	public boolean acceptPaymentMethod(PaymentMethod paymentMethod) {
+	    return getPaymentMethods().contains(paymentMethod);
+	}
+
+	public boolean doesNotAcceptPaymentMethod(PaymentMethod paymentMethod) {
+	    return !acceptPaymentMethod(paymentMethod);
+	}
 }

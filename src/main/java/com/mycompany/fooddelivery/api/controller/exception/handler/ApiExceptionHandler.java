@@ -31,7 +31,6 @@ import com.mycompany.fooddelivery.core.validation.exception.ValidationException;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityInUseException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
-import com.mycompany.fooddelivery.domain.exception.RestaurantNotFoundException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
