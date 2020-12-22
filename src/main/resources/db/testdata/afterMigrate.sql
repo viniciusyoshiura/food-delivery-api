@@ -101,3 +101,15 @@ insert into item_purchase_order (id, purchase_order_id , product_id , quantity, 
 insert into purchase_order (id, uuid, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, subtotal, shipping_fee, total_value) values (2, 'd4ecb71b-09a4-4f8b-bafd-4c3855d39673', 4, 1, 2, 1, '14027-125', 'Rua Giselda de Mello Silva', '300', 'Casa 2', 'Jardim Nova Aliança Sul', 'CREATED', utc_timestamp, 79, 0, 79);
 
 insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (3, 2, 6, 1, 79, 79, 'Medium rare');
+
+insert into purchase_order (id, uuid, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, date_confirmation, date_delivery, subtotal, shipping_fee, total_value) values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 1, 1, 1, '38400-222', 'Rua Natal', '200', 'S/C', 'Jardim Brasil', 'DELIVERED', '2020-12-22 21:10:00', '2020-12-22 21:10:45', '2020-12-22 21:55:44', 110, 10, 120);
+
+insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (4, 3, 2, 1, 110, 110, null);
+
+insert into purchase_order (id, uuid, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, date_confirmation, date_delivery, subtotal, shipping_fee, total_value) values (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 2, 1, 1, '38400-800', 'Rua Fortaleza', '900', 'Apto 504', 'Centro', 'DELIVERED', '2020-12-02 20:34:04', '2020-12-02 20:35:10', '2020-12-02 21:10:32', 174.4, 5, 179.4);
+
+insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (5, 4, 3, 2, 87.2, 174.4, null);
+
+insert into purchase_order (id, uuid, restaurant_id, user_client_id , payment_method_id, address_city_id , address_zip_code, address_street, address_number, address_complement, address_district, status, date_register, date_confirmation, date_delivery, subtotal, shipping_fee, total_value) values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-256', 'Rua 10', '930', 'Casa 20', 'Martins', 'DELIVERED', '2020-12-20 21:00:30', '2020-12-20 21:01:21', '2020-12-20 21:20:10', 87.2, 10, 97.2);
+
+insert into item_purchase_order (id, purchase_order_id , product_id , quantity, unit_price, total_price, observation) values (6, 5, 3, 1, 87.2, 87.2, null);

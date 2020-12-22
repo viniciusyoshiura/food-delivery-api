@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +24,6 @@ import com.mycompany.fooddelivery.api.converter.RestaurantInputConverter;
 import com.mycompany.fooddelivery.api.deconverter.RestaurantInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.RestaurantDTO;
 import com.mycompany.fooddelivery.api.model.input.RestaurantInput;
-import com.mycompany.fooddelivery.api.model.view.RestaurantView;
 import com.mycompany.fooddelivery.core.utils.ObjectMergeUtils;
 import com.mycompany.fooddelivery.core.utils.ValidationUtils;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;

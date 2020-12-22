@@ -22,9 +22,11 @@ import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderSummaryDTO;
 import com.mycompany.fooddelivery.api.model.input.PurchaseOrderInput;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
+import com.mycompany.fooddelivery.domain.infrastructure.specs.PurchaseOrderSpecs;
 import com.mycompany.fooddelivery.domain.model.PurchaseOrder;
 import com.mycompany.fooddelivery.domain.model.User;
 import com.mycompany.fooddelivery.domain.repository.PurchaseOrderRepository;
+import com.mycompany.fooddelivery.domain.repository.filter.PurchaseOrderFilter;
 import com.mycompany.fooddelivery.domain.service.PurchaseOrderIssuanceService;
 
 @RestController
@@ -47,9 +49,10 @@ public class PurchaseOrderController {
     private PurchaseOrderInputDeconverter purchaseOrderInputDeconverter;
     
     @GetMapping
-    public List<PurchaseOrderSummaryDTO> list() {
-        List<PurchaseOrder> allPurchaseOrders = purchaseOrderRepository.findAll();
+    public List<PurchaseOrderSummaryDTO> listWithFilters(PurchaseOrderFilter filter) {
         
+    	List<PurchaseOrder> allPurchaseOrders = purchaseOrderRepository.findAll(PurchaseOrderSpecs.usingFilter(filter));
+		
         return purchaseOrderSummaryDTOConverter.toCollectionModel(allPurchaseOrders);
     }
     
