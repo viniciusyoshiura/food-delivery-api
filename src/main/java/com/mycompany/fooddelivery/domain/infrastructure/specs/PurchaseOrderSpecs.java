@@ -6,8 +6,8 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.mycompany.fooddelivery.domain.filter.PurchaseOrderFilter;
 import com.mycompany.fooddelivery.domain.model.PurchaseOrder;
-import com.mycompany.fooddelivery.domain.repository.filter.PurchaseOrderFilter;
 
 public class PurchaseOrderSpecs {
 

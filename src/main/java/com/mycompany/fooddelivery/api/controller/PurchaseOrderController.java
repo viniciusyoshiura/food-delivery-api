@@ -28,11 +28,11 @@ import com.mycompany.fooddelivery.api.model.input.PurchaseOrderInput;
 import com.mycompany.fooddelivery.core.data.PageableTranslator;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
+import com.mycompany.fooddelivery.domain.filter.PurchaseOrderFilter;
 import com.mycompany.fooddelivery.domain.infrastructure.specs.PurchaseOrderSpecs;
 import com.mycompany.fooddelivery.domain.model.PurchaseOrder;
 import com.mycompany.fooddelivery.domain.model.User;
 import com.mycompany.fooddelivery.domain.repository.PurchaseOrderRepository;
-import com.mycompany.fooddelivery.domain.repository.filter.PurchaseOrderFilter;
 import com.mycompany.fooddelivery.domain.service.PurchaseOrderIssuanceService;
 
 @RestController
@@ -55,7 +55,7 @@ public class PurchaseOrderController {
 	private PurchaseOrderInputDeconverter purchaseOrderInputDeconverter;
 	
 	// ---------- See SquigglyConfig.squigglyRequestFilter, which limits the JSON return fields
-	// ---------- See PageJsonSerializer, which sets the Pageable returno object
+	// ---------- See PageJsonSerializer, which sets the Pageable return object
 	// ---------- PurchaseOrderFilter gets the parameter filters
 	// ---------- Pageable includes pagination parameters
 	@GetMapping

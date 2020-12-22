@@ -1,4 +1,4 @@
-package com.mycompany.fooddelivery.domain.repository.filter;
+package com.mycompany.fooddelivery.domain.filter;
 
 import java.time.OffsetDateTime;
 
