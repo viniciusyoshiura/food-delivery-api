@@ -5,6 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,10 +47,14 @@ public class KitchenController {
 	private KitchenInputDeconverter kitchenInputDeconverter;    
 	
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public List<KitchenDTO> list() {
-		List<Kitchen> allKitchens = kitchenRepository.findAll();
+	public Page<KitchenDTO> list(@PageableDefault(size = 10) Pageable pageable) {
+		Page<Kitchen> pageKitchens = kitchenRepository.findAll(pageable);
 	    
-	    return kitchenDTOConverter.toCollectionModel(allKitchens);
+		List<KitchenDTO> kitchenDTOs = kitchenDTOConverter.toCollectionModel(pageKitchens.getContent());
+		
+		Page<KitchenDTO> kitchenDTOsPage = new PageImpl<>(kitchenDTOs, pageable, pageKitchens.getTotalElements());
+		
+		return kitchenDTOsPage;
 	}
 
 	@GetMapping(value = "/{listXml}", produces = MediaType.APPLICATION_XML_VALUE)

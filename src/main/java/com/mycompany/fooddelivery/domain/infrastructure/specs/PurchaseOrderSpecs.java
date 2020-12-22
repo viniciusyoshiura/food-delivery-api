@@ -12,37 +12,41 @@ import com.mycompany.fooddelivery.domain.repository.filter.PurchaseOrderFilter;
 public class PurchaseOrderSpecs {
 
 	public static Specification<PurchaseOrder> usingFilter(PurchaseOrderFilter filter) {
-		
+
 		// ---------- root is the entity (PurchaseOrder)
+		// ---------- query is the JPA query
 		// ---------- builder is used to build predicates
 		return (root, query, builder) -> {
-			
-			// ---------- Fetch solves the problem of N+1 queries of nested entities
-			root.fetch("restaurant").fetch("kitchen");
-			root.fetch("user");
-			
+
+			// ---------- Check if query is of PurchaseOrder and if so, use fetch
+			if (PurchaseOrder.class.equals(query.getResultType())) {
+				// ---------- Fetch solves the problem of N+1 queries of nested entities
+				root.fetch("restaurant").fetch("kitchen");
+				root.fetch("user");
+			}
 			var predicates = new ArrayList<Predicate>();
-			
+
 			if (filter.getUserId() != null) {
 				predicates.add(builder.equal(root.get("user"), filter.getUserId()));
 			}
-			
+
 			if (filter.getRestaurantId() != null) {
 				predicates.add(builder.equal(root.get("restaurant"), filter.getRestaurantId()));
 			}
-			
+
 			if (filter.getDataRegisterStart() != null) {
-				predicates.add(builder.greaterThanOrEqualTo(root.get("dateRegister"), 
-						filter.getDataRegisterStart()));
+				predicates.add(builder.greaterThanOrEqualTo(root.get("dateRegister"), filter.getDataRegisterStart()));
 			}
-			
+
 			if (filter.getDataRegisterEnd() != null) {
-				predicates.add(builder.lessThanOrEqualTo(root.get("dateRegister"), 
-						filter.getDataRegisterEnd()));
+				predicates.add(builder.lessThanOrEqualTo(root.get("dateRegister"), filter.getDataRegisterEnd()));
 			}
-			
+			if (filter.getUuid() != null) {
+				predicates.add(builder.equal(root.get("uuid"), filter.getUuid()));
+			}
+
 			return builder.and(predicates.toArray(new Predicate[0]));
 		};
 	}
-	
+
 }

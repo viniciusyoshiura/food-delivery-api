@@ -11,7 +11,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PurchaseOrderFilter {
-
+	
+	private String uuid;
 	private Long userId;
 	private Long restaurantId;
 	
