@@ -53,6 +53,25 @@ public class PurchaseOrderController {
         return purchaseOrderSummaryDTOConverter.toCollectionModel(allPurchaseOrders);
     }
     
+//    @GetMapping
+//	public MappingJacksonValue list(@RequestParam(required = false) String fields) {
+//		List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
+//		List<PurchaseOrderSummaryDTO> purchaseOrderDTOs = purchaseOrderSummaryDTOConverter.toCollectionModel(purchaseOrders);  
+//		
+//		MappingJacksonValue purchaseOrdersWrapper = new MappingJacksonValue(purchaseOrderDTOs);
+//		
+//		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+//		filterProvider.addFilter("filterPurchaseOrder", SimpleBeanPropertyFilter.serializeAll());
+//		
+//		if (StringUtils.isNotBlank(fields)) {
+//			filterProvider.addFilter("filterPurchaseOrder", SimpleBeanPropertyFilter.filterOutAllExcept(fields.split(",")));
+//		}
+//		
+//		purchaseOrdersWrapper.setFilters(filterProvider);
+//		
+//		return purchaseOrdersWrapper;
+//	}
+    
     @GetMapping("/{purchaseOrderUuid}")
     public PurchaseOrderDTO search(@PathVariable String purchaseOrderUuid) {
     	PurchaseOrder purchaseOrder = purchaseOrderIssuanceService.searchOrFail(purchaseOrderUuid);

@@ -81,23 +81,23 @@ public class RestaurantController {
 //		return restaurantDTOConverter.toCollectionModel(restaurantRepository.findAll());
 //	}
 	
-	@GetMapping("/formatted")
-	public MappingJacksonValue listByFormat(@RequestParam(required = false) String format) {
-		List<Restaurant> restaurants = restaurantRepository.findAll();
-		List<RestaurantDTO> restaurantsDTOs = restaurantDTOConverter.toCollectionModel(restaurants);
-		
-		MappingJacksonValue restaurantsWrapper = new MappingJacksonValue(restaurantsDTOs);
-		
-		restaurantsWrapper.setSerializationView(RestaurantView.Summary.class);
-		
-		if ("only-name".equals(format)) {
-			restaurantsWrapper.setSerializationView(RestaurantView.OnlyName.class);
-		} else if ("complete".equals(format)) {
-			restaurantsWrapper.setSerializationView(null);
-		}
-		
-		return restaurantsWrapper;
-	}
+//	@GetMapping("/formatted")
+//	public MappingJacksonValue listByFormat(@RequestParam(required = false) String format) {
+//		List<Restaurant> restaurants = restaurantRepository.findAll();
+//		List<RestaurantDTO> restaurantsDTOs = restaurantDTOConverter.toCollectionModel(restaurants);
+//		
+//		MappingJacksonValue restaurantsWrapper = new MappingJacksonValue(restaurantsDTOs);
+//		
+//		restaurantsWrapper.setSerializationView(RestaurantView.Summary.class);
+//		
+//		if ("only-name".equals(format)) {
+//			restaurantsWrapper.setSerializationView(RestaurantView.OnlyName.class);
+//		} else if ("complete".equals(format)) {
+//			restaurantsWrapper.setSerializationView(null);
+//		}
+//		
+//		return restaurantsWrapper;
+//	}
 	
 	@GetMapping("/{restaurantId}")
 	public RestaurantDTO search(@PathVariable Long restaurantId) {
