@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.stereotype.Repository;
@@ -83,8 +84,15 @@ public class SaleQueryServiceImpl implements SaleQueryService {
 		// ---------- Setting predicates (where)
 		query.where(predicates.toArray(new Predicate[0]));
 		
+		// ---------- order by date(p.date_register) asc
+		List<Order> orderList = new ArrayList<>();
+		orderList.add(builder.asc(functionDateDateRegister));
+
+		query.orderBy(orderList);
+		
 		// ---------- group by date(p.date_register)
 		query.groupBy(functionDateDateRegister);
+		
 		
 		return manager.createQuery(query).getResultList();
 	}
