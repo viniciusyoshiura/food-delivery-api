@@ -11,7 +11,8 @@ public enum ProblemType {
 	INCOMPREENSIBLE_MESSAGE("/incomprehensible-message", "Incomprehensible message"),
 	INVALID_PARAMETER("/invalid-parameter", "Invalid parameter"),
 	SYSTEM_ERROR("/system-error","System error"),
-	INVALID_DATA("/invalid-data", "Invalid data"); 
+	INVALID_DATA("/invalid-data", "Invalid data"),
+	MAX_FILE_SIZE_EXCEEDED("/max-file-size-exceeded", "File is too large"); 
 	
 	private String title;
 	private String uri;

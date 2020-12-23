@@ -1,4 +1,4 @@
-package com.mycompany.fooddelivery.domain.infrastructure;
+package com.mycompany.fooddelivery.domain.infrastructure.repositories;
 
 import java.util.Optional;
 
