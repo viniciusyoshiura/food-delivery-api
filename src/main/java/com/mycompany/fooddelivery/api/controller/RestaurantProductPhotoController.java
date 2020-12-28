@@ -1,13 +1,13 @@
 package com.mycompany.fooddelivery.api.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +29,7 @@ import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
 import com.mycompany.fooddelivery.domain.model.Product;
 import com.mycompany.fooddelivery.domain.model.ProductPhoto;
 import com.mycompany.fooddelivery.domain.service.PhotoStorageService;
+import com.mycompany.fooddelivery.domain.service.PhotoStorageService.RetrievedPhoto;
 import com.mycompany.fooddelivery.domain.service.ProductPhotoService;
 import com.mycompany.fooddelivery.domain.service.ProductRegistrationService;
 
@@ -77,7 +78,7 @@ public class RestaurantProductPhotoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<InputStreamResource> getPhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
+	public ResponseEntity<?> getPhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		try {
 			ProductPhoto productPhoto = productPhotoService.searchOrFail(restaurantId, productId);
@@ -87,11 +88,18 @@ public class RestaurantProductPhotoController {
 
 			checkMediaTypeCompatibility(photoMediaType, acceptedMediaTypes);
 
-			InputStream inputStream = photoStorageService.retrieve(productPhoto.getFileName());
-
-			return ResponseEntity.ok()
-					.contentType(photoMediaType)
-					.body(new InputStreamResource(inputStream));
+			RetrievedPhoto retrievedPhoto = photoStorageService.retrieve(productPhoto.getFileName());
+			
+			if (retrievedPhoto.hasUrl()) {
+				return ResponseEntity
+						.status(HttpStatus.FOUND)
+						.header(HttpHeaders.LOCATION, retrievedPhoto.getUrl())
+						.build();
+			} else {
+				return ResponseEntity.ok()
+						.contentType(photoMediaType)
+						.body(new InputStreamResource(retrievedPhoto.getInputStream()));
+			}
 			
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
@@ -100,7 +108,7 @@ public class RestaurantProductPhotoController {
 	
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void excluir(@PathVariable Long restaurantId, @PathVariable Long productId) {
+	public void remove(@PathVariable Long restaurantId, @PathVariable Long productId) {
 		productPhotoService.remove(restaurantId, productId);
 	}  
 

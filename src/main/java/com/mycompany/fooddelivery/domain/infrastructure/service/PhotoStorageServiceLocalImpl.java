@@ -1,21 +1,19 @@
 package com.mycompany.fooddelivery.domain.infrastructure.service;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
+import com.mycompany.fooddelivery.core.storage.StorageProperties;
 import com.mycompany.fooddelivery.domain.infrastructure.service.exception.StorageException;
 import com.mycompany.fooddelivery.domain.service.PhotoStorageService;
 
-@Service
 public class PhotoStorageServiceLocalImpl implements PhotoStorageService {
-
-	@Value("${storage.local.folder-photos}")
-	private Path photoFolder;
+	
+	@Autowired
+	private StorageProperties storageProperties;
 	
 	@Override
 	public void store(NewPhoto newPhoto) {
@@ -31,7 +29,8 @@ public class PhotoStorageServiceLocalImpl implements PhotoStorageService {
 	
 	private Path getFilePath(String filName) {
 		// ---------- Resolve concatenates folder + fileName
-		return photoFolder.resolve(Path.of(filName));
+		return storageProperties.getLocal().getFolderPhotos()
+			.resolve(Path.of(filName));
 	}
 
 	@Override
@@ -47,11 +46,15 @@ public class PhotoStorageServiceLocalImpl implements PhotoStorageService {
 	}
 	
 	@Override
-	public InputStream retrieve(String fileName) {
+	public RetrievedPhoto retrieve(String fileName) {
 	    try {
 	        Path filePath = getFilePath(fileName);
 
-	        return Files.newInputStream(filePath);
+	        RetrievedPhoto retrievedPhoto = RetrievedPhoto.builder()
+					.inputStream(Files.newInputStream(filePath))
+					.build();
+			
+			return retrievedPhoto;
 	    } catch (Exception e) {
 	        throw new StorageException("It was not possible to retrieve file.", e);
 	    }
