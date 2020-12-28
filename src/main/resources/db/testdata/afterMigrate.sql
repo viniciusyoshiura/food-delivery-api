@@ -86,6 +86,8 @@ insert into user (id, name, email, password, date_register) values (2, 'Maria Jo
 insert into user (id, name, email, password, date_register) values (3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
 insert into user (id, name, email, password, date_register) values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
+insert into user (id, name, email, password, date_register) values (6, 'Rebecca Chambers', 'mycompanyfooddelivery+rebecca@gmail.com', '123', utc_timestamp);
+insert into user (id, name, email, password, date_register) values (7, 'Enrico Marini', 'mycompanyfooddelivery+enrico@gmail.com', '123', utc_timestamp);
 
 insert into groupinge_permission (groupinge_id , permission_id ) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
