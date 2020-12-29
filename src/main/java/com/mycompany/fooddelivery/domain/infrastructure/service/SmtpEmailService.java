@@ -1,5 +1,6 @@
 package com.mycompany.fooddelivery.domain.infrastructure.service;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import com.mycompany.fooddelivery.domain.service.MailSendingService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-@Service
 public class SmtpEmailService implements MailSendingService {
 
 	@Autowired
@@ -32,15 +32,7 @@ public class SmtpEmailService implements MailSendingService {
 		
 		try {
 			
-			String body = processTemplate(message);
-			
-			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-			
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-			helper.setFrom(emailProperties.getSender());
-			helper.setTo(message.getRecipients().toArray(new String[0]));
-			helper.setSubject(message.getSubject());
-			helper.setText(body, true);
+			MimeMessage mimeMessage = createMimeMessage(message);
 			
 			javaMailSender.send(mimeMessage);
 		} catch (Exception e) {
@@ -49,7 +41,7 @@ public class SmtpEmailService implements MailSendingService {
 		
 	}
 	
-	private String processTemplate(Message message) {
+	protected String processTemplate(Message message) {
 		try {
 			Template template = freemarkerConfig.getTemplate(message.getBody());
 			
@@ -58,6 +50,20 @@ public class SmtpEmailService implements MailSendingService {
 		} catch (Exception e) {
 			throw new EmailException("It was not possible to build the e-mail template", e);
 		}
+	}
+	
+	protected MimeMessage createMimeMessage(Message message) throws MessagingException {
+	    String body = processTemplate(message);
+	    
+	    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+	    
+	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+		helper.setFrom(emailProperties.getSender());
+		helper.setTo(message.getRecipients().toArray(new String[0]));
+		helper.setSubject(message.getSubject());
+		helper.setText(body, true);
+	    
+	    return mimeMessage;
 	}
 
 }

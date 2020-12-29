@@ -21,17 +21,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.mycompany.fooddelivery.domain.event.PurchaseOrderCanceledEvent;
+import com.mycompany.fooddelivery.domain.event.PurchaseOrderConfirmedEvent;
+import com.mycompany.fooddelivery.domain.event.PurchaseOrderDeliveredEvent;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.model.enumerator.StatusPurchaseOrder;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+// ---------- AbstractAggregateRoot is used to register an event
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class PurchaseOrder {
+public class PurchaseOrder extends AbstractAggregateRoot<PurchaseOrder>{
 
 	@EqualsAndHashCode.Include
     @Id
@@ -94,16 +99,25 @@ public class PurchaseOrder {
     public void confirm() {
 		setStatus(StatusPurchaseOrder.CONFIRMED);
 		setDateConfirmation(OffsetDateTime.now());
+		
+		// ---------- Registering the event to be triggered when the PurchaseOrder is confirmed
+		registerEvent(new PurchaseOrderConfirmedEvent(this));
 	}
 	
 	public void deliver() {
 		setStatus(StatusPurchaseOrder.DELIVERED);
 		setDateDelivery(OffsetDateTime.now());
+		
+		// ---------- Registering the event to be triggered when the PurchaseOrder is delivered
+		registerEvent(new PurchaseOrderDeliveredEvent(this));
 	}
 	
 	public void cancel() {
 		setStatus(StatusPurchaseOrder.CANCELED);
 		setDateCancellation(OffsetDateTime.now());
+		
+		// ---------- Registering the event to be triggered when the PurchaseOrder is canceled
+		registerEvent(new PurchaseOrderCanceledEvent(this));
 	}
 	
 	private void setStatus(StatusPurchaseOrder newStatusPurchaseOrder) {

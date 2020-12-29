@@ -15,8 +15,24 @@ import lombok.Setter;
 @Component
 @ConfigurationProperties("email")
 public class EmailProperties {
-
+	
+	private Implementation implemenation = Implementation.MOCK;
+	
+	private Sandbox sandbox = new Sandbox();
+	
+	public enum Implementation {
+	    SMTP, MOCK, SANDBOX
+	}
+	
 	@NotNull
 	private String sender;
+	
+	@Getter
+	@Setter
+	public class Sandbox {
+	    
+	    private String recipient;
+	    
+	}
 	
 }

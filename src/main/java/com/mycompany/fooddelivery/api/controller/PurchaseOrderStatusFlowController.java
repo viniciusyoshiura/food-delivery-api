@@ -25,13 +25,13 @@ public class PurchaseOrderStatusFlowController {
 	
 	@PutMapping("/cancellation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancelar(@PathVariable String purchaseOrderUuid) {
+	public void cancel(@PathVariable String purchaseOrderUuid) {
 		purchaseOrderStatusFlowService.cancel(purchaseOrderUuid);
 	}
 
 	@PutMapping("/delivery")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void entregar(@PathVariable String purchaseOrderUuid) {
+	public void deliver(@PathVariable String purchaseOrderUuid) {
 		purchaseOrderStatusFlowService.deliver(purchaseOrderUuid);
 	}
 	
