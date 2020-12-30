@@ -1,11 +1,14 @@
 package com.mycompany.fooddelivery.api.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,17 +44,39 @@ public class PaymentMethodController {
 	private PaymentMethodInputDeconverter paymentMethodInputDeconverter;
 
 	@GetMapping
-	public List<PaymentMethodDTO> list() {
+	public ResponseEntity<List<PaymentMethodDTO>> list() {
 		List<PaymentMethod> allPaymentMethods = paymentMethodRepository.findAll();
-
-		return paymentMethodDTOConverter.toCollectionModel(allPaymentMethods);
+//
+//		return paymentMethodDTOConverter.toCollectionModel(allPaymentMethods);
+//		
+		List<PaymentMethodDTO> paymentMethodDTOs = paymentMethodDTOConverter
+				.toCollectionModel(allPaymentMethods);
+		
+		return ResponseEntity.ok()
+				// ---------- MaxAge sets the max age of cache
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+				
+				// ---------- noCache: validation request of cache (ETag) is mandatory, as the ETag is stale (expired)
+//				.cacheControl(CacheControl.noCache())
+				// ---------- noStore: there is no cache
+				.cacheControl(CacheControl.noStore())
+				.body(paymentMethodDTOs);
+		// ---------- OBSERVATION: to force the request directly from server,use the request header 'Cache-control': 'no-cache'
+		
 	}
 
 	@GetMapping("/{paymentMethodId}")
-	public PaymentMethodDTO search(@PathVariable Long paymentMethodId) {
+	public ResponseEntity<PaymentMethodDTO> search(@PathVariable Long paymentMethodId) {
+		
 		PaymentMethod paymentMethod = paymentMethodRegistrationService.searchOrFail(paymentMethodId);
-
-		return paymentMethodDTOConverter.toModel(paymentMethod);
+		  
+		PaymentMethodDTO paymentMethodDTO =  paymentMethodDTOConverter.toModel(paymentMethod);
+		  
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+			.body(paymentMethodDTO);
 	}
 
 	@PostMapping
