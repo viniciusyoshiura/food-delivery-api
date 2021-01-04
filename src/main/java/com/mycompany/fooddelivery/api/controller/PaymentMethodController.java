@@ -1,5 +1,6 @@
 package com.mycompany.fooddelivery.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.mycompany.fooddelivery.api.converter.PaymentMethodDTOConverter;
 import com.mycompany.fooddelivery.api.deconverter.PaymentMethodInputDeconverter;
@@ -44,7 +47,27 @@ public class PaymentMethodController {
 	private PaymentMethodInputDeconverter paymentMethodInputDeconverter;
 
 	@GetMapping
-	public ResponseEntity<List<PaymentMethodDTO>> list() {
+	public ResponseEntity<List<PaymentMethodDTO>> list(ServletWebRequest request) {
+		
+		// ---------- Disabling shallowEtag in order to use Deep ETag (see WebConfig)
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		
+		String eTag = "0";
+		
+		OffsetDateTime lastDateUpdate = paymentMethodRepository.getLastDateUpdate();
+		
+		if (lastDateUpdate != null) {
+			// ---------- toEpochSecond - converts offsetDateTime to seconds
+			eTag = String.valueOf(lastDateUpdate.toEpochSecond());
+		}
+		
+		// ---------- checkNotModified compares the request header If-None-Match with eTag 
+		if (request.checkNotModified(eTag)) {
+			// ---------- If-Non-Match and Etag are equal, than return null
+			return null;
+		}
+		
+		
 		List<PaymentMethod> allPaymentMethods = paymentMethodRepository.findAll();
 //
 //		return paymentMethodDTOConverter.toCollectionModel(allPaymentMethods);
@@ -56,19 +79,34 @@ public class PaymentMethodController {
 				// ---------- MaxAge sets the max age of cache
 //				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
 //				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
-//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 				
 				// ---------- noCache: validation request of cache (ETag) is mandatory, as the ETag is stale (expired)
+				// ---------- OBSERVATION: to force the request directly from server,use the request header 'Cache-control': 'no-cache'
 //				.cacheControl(CacheControl.noCache())
 				// ---------- noStore: there is no cache
-				.cacheControl(CacheControl.noStore())
+//				.cacheControl(CacheControl.noStore())
+				.eTag(eTag)
 				.body(paymentMethodDTOs);
-		// ---------- OBSERVATION: to force the request directly from server,use the request header 'Cache-control': 'no-cache'
 		
 	}
 
 	@GetMapping("/{paymentMethodId}")
-	public ResponseEntity<PaymentMethodDTO> search(@PathVariable Long paymentMethodId) {
+	public ResponseEntity<PaymentMethodDTO> search(@PathVariable Long paymentMethodId, ServletWebRequest request) {
+		
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+	    
+	    String eTag = "0";
+	    
+	    OffsetDateTime dateUpdate = paymentMethodRepository.getDateUpdateById(paymentMethodId);
+	    
+	    if (dateUpdate != null) {
+	        eTag = String.valueOf(dateUpdate.toEpochSecond());
+	    }
+	    
+	    if (request.checkNotModified(eTag)) {
+	        return null;
+	    }
 		
 		PaymentMethod paymentMethod = paymentMethodRegistrationService.searchOrFail(paymentMethodId);
 		  
@@ -76,6 +114,7 @@ public class PaymentMethodController {
 		  
 		return ResponseEntity.ok()
 			.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+            .eTag(eTag)
 			.body(paymentMethodDTO);
 	}
 
