@@ -14,7 +14,7 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Lo
 	@Query("select max(dateUpdate) from PaymentMethod")
 	OffsetDateTime getLastDateUpdate();
 	
-	@Query("select dateUpdate from dateUpdate where id = :paymentMethodId")
+	@Query("select dateUpdate from PaymentMethod where id = :paymentMethodId")
 	OffsetDateTime getDateUpdateById(Long paymentMethodId); 
 	
 }

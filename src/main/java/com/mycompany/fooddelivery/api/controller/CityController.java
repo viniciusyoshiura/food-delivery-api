@@ -26,6 +26,12 @@ import com.mycompany.fooddelivery.domain.model.City;
 import com.mycompany.fooddelivery.domain.repository.CityRepository;
 import com.mycompany.fooddelivery.domain.service.CityRegistrationService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+// ---------- @Api associates with created Tag in SpringFoxConfig.apiDocket
+@Api(tags = "Cities")
 @RestController
 @RequestMapping(value = "/cities")
 public class CityController {
@@ -35,58 +41,74 @@ public class CityController {
 
 	@Autowired
 	private CityRegistrationService cityRegistrationService;
-	
+
 	@Autowired
 	private CityDTOConverter cityDTOConverter;
 
 	@Autowired
-	private CityInputDeconverter cityInputDeconverter;   
-	
+	private CityInputDeconverter cityInputDeconverter;
+
+	// ---------- @ApiOperation - describes the endpoint in Swagger
+	@ApiOperation("List all cities")
 	@GetMapping
 	public List<CityDTO> list() {
-		List<City> cities =  cityRepository.findAll();
-		 return cityDTOConverter.toCollectionModel(cities);
+		List<City> cities = cityRepository.findAll();
+		return cityDTOConverter.toCollectionModel(cities);
 	}
 
+	// ---------- @ApiOperation - describes the endpoint in Swagger
+	// ---------- @@ApiParam - describes the parameter in Swagger
+	@ApiOperation("Search a city by ID")
 	@GetMapping("/{cityId}")
-	public CityDTO search(@PathVariable Long cityId) {
+	public CityDTO search(@ApiParam(value = "City ID", example = "1") @PathVariable Long cityId) {
 		City city = cityRegistrationService.searchOrFail(cityId);
-	    
-	    return cityDTOConverter.toModel(city);
+
+		return cityDTOConverter.toModel(city);
 	}
 
+	// ---------- @ApiOperation - describes the endpoint in Swagger
+	// ---------- @@ApiParam - describes the parameter in Swagger
+	@ApiOperation("Register a new city")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CityDTO insert(@RequestBody @Valid CityInput cityInput) {
+	public CityDTO insert(
+			@ApiParam(name = "body", value = "JSON representation of a new city") @RequestBody @Valid CityInput cityInput) {
 		try {
 			City city = cityInputDeconverter.toDomainObject(cityInput);
-	        
+
 			city = cityRegistrationService.save(city);
-	        
-	        return cityDTOConverter.toModel(city);
+
+			return cityDTOConverter.toModel(city);
 		} catch (StateNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
+	// ---------- @ApiOperation - describes the endpoint in Swagger
+	// ---------- @@ApiParam - describes the parameter in Swagger
+	@ApiOperation("Updates a city by ID")
 	@PutMapping("/{cityId}")
-	public CityDTO update(@PathVariable Long cityId, @RequestBody @Valid CityInput cityInput) {
+	public CityDTO update(@ApiParam(value = "City ID", example = "1") @PathVariable Long cityId,
+			@ApiParam(name = "body", value = "JSON representation of a city with new data") @RequestBody @Valid CityInput cityInput) {
 
 		try {
 			City currentCity = cityRegistrationService.searchOrFail(cityId);
-	        
+
 			cityInputDeconverter.copyToDomainObject(cityInput, currentCity);
-	        
-	        currentCity = cityRegistrationService.save(currentCity);
-	        
-	        return cityDTOConverter.toModel(currentCity);
+
+			currentCity = cityRegistrationService.save(currentCity);
+
+			return cityDTOConverter.toModel(currentCity);
 		} catch (StateNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
+	// ---------- @ApiOperation - describes the endpoint in Swagger
+	// ---------- @@ApiParam - describes the parameter in Swagger
+	@ApiOperation("Removes a city by ID")
 	@DeleteMapping("/{cityId}")
-	public void remove(@PathVariable Long cityId) {
+	public void remove(@ApiParam(value = "City ID", example = "1") @PathVariable Long cityId) {
 		cityRegistrationService.remove(cityId);
 	}
 
