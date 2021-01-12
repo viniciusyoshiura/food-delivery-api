@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.fooddelivery.api.converter.UserDTOConverter;
 import com.mycompany.fooddelivery.api.model.dto.UserDTO;
+import com.mycompany.fooddelivery.api.openapi.controller.RestaurantResponsibleUserControllerOpenApi;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 import com.mycompany.fooddelivery.domain.service.RestaurantRegistrationService;
 
 @RestController
-@RequestMapping(value = "/restaurants/{restaurantId}/responsibles")
-public class RestaurantResponsibleUserController {
+@RequestMapping(path = "/restaurants/{restaurantId}/responsibles", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestaurantResponsibleUserController implements RestaurantResponsibleUserControllerOpenApi{
 
 	@Autowired
     private RestaurantRegistrationService restaurantRegistrationService;

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import com.mycompany.fooddelivery.api.deconverter.PurchaseOrderInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderDTO;
 import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderSummaryDTO;
 import com.mycompany.fooddelivery.api.model.input.PurchaseOrderInput;
+import com.mycompany.fooddelivery.api.openapi.controller.PurchaseOrderControllerOpenApi;
 import com.mycompany.fooddelivery.core.data.PageableTranslator;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
@@ -36,8 +38,8 @@ import com.mycompany.fooddelivery.domain.repository.PurchaseOrderRepository;
 import com.mycompany.fooddelivery.domain.service.PurchaseOrderIssuanceService;
 
 @RestController
-@RequestMapping(value = "/purchase-orders")
-public class PurchaseOrderController {
+@RequestMapping(path = "/purchase-orders", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PurchaseOrderController implements PurchaseOrderControllerOpenApi {
 
 	@Autowired
 	private PurchaseOrderRepository purchaseOrderRepository;
@@ -99,7 +101,7 @@ public class PurchaseOrderController {
 //		
 //		return purchaseOrdersWrapper;
 //	}
-
+	
 	@GetMapping("/{purchaseOrderUuid}")
 	public PurchaseOrderDTO search(@PathVariable String purchaseOrderUuid) {
 		PurchaseOrder purchaseOrder = purchaseOrderIssuanceService.searchOrFail(purchaseOrderUuid);

@@ -26,13 +26,14 @@ import com.mycompany.fooddelivery.api.deconverter.KitchenInputDeconverter;
 import com.mycompany.fooddelivery.api.model.KitchensXmlWrapper;
 import com.mycompany.fooddelivery.api.model.dto.KitchenDTO;
 import com.mycompany.fooddelivery.api.model.input.KitchenInput;
+import com.mycompany.fooddelivery.api.openapi.controller.KitchenControllerOpenApi;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
 import com.mycompany.fooddelivery.domain.repository.KitchenRepository;
 import com.mycompany.fooddelivery.domain.service.KitchenRegistrationService;
 
 @RestController
-@RequestMapping(value = "/kitchens")
-public class KitchenController {
+@RequestMapping(path = "/kitchens", produces = MediaType.APPLICATION_JSON_VALUE)
+public class KitchenController implements KitchenControllerOpenApi{
 
 	@Autowired
 	private KitchenRepository kitchenRepository;

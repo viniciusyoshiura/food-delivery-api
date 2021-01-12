@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +21,14 @@ import com.mycompany.fooddelivery.api.converter.GroupingeDTOConverter;
 import com.mycompany.fooddelivery.api.deconverter.GroupingeInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.GroupingeDTO;
 import com.mycompany.fooddelivery.api.model.input.GroupingeInput;
+import com.mycompany.fooddelivery.api.openapi.controller.GroupingeControllerOpenApi;
 import com.mycompany.fooddelivery.domain.model.Groupinge;
 import com.mycompany.fooddelivery.domain.repository.GroupingeRepository;
 import com.mycompany.fooddelivery.domain.service.GroupingeRegistrationService;
 
 @RestController
-@RequestMapping("/groups")
-public class GroupingeController {
+@RequestMapping(path = "/groups", produces = MediaType.APPLICATION_JSON_VALUE)
+public class GroupingeController implements GroupingeControllerOpenApi {
 
 	@Autowired
     private GroupingeRepository groupingeRepository;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.fooddelivery.api.converter.PaymentMethodDTOConverter;
 import com.mycompany.fooddelivery.api.model.dto.PaymentMethodDTO;
+import com.mycompany.fooddelivery.api.openapi.controller.RestaurantPaymentMethodControllerOpenApi;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 import com.mycompany.fooddelivery.domain.service.RestaurantRegistrationService;
 
 @RestController
-@RequestMapping(value = "/restaurants/{restaurantId}/payment-methods")
-public class RestaurantPaymentMethodController {
+@RequestMapping(path = "/restaurants/{restaurantId}/payment-methods", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestaurantPaymentMethodController implements RestaurantPaymentMethodControllerOpenApi{
 
 	@Autowired
 	private RestaurantRegistrationService restaurantRegistrationService;

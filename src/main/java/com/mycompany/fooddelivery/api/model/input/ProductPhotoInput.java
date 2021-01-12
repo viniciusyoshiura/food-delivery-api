@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mycompany.fooddelivery.core.validation.FileContentType;
 import com.mycompany.fooddelivery.core.validation.FileSize;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,11 +17,13 @@ import lombok.Setter;
 @Setter
 public class ProductPhotoInput {
 	
+	@ApiModelProperty(hidden = true)
 	@NotNull
 	@FileSize(max = "5000KB")
 	@FileContentType(allowed = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
 	private MultipartFile file;
 	
+	@ApiModelProperty(value = "Product photo description", required = true)
 	@NotBlank
 	private String description;
 	

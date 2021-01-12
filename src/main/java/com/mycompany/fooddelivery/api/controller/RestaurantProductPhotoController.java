@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mycompany.fooddelivery.api.converter.ProductPhotoDTOConverter;
 import com.mycompany.fooddelivery.api.model.dto.ProductPhotoDTO;
 import com.mycompany.fooddelivery.api.model.input.ProductPhotoInput;
+import com.mycompany.fooddelivery.api.openapi.controller.RestaurantProductPhotoControllerOpenApi;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
 import com.mycompany.fooddelivery.domain.model.Product;
 import com.mycompany.fooddelivery.domain.model.ProductPhoto;
@@ -34,8 +36,8 @@ import com.mycompany.fooddelivery.domain.service.ProductPhotoService;
 import com.mycompany.fooddelivery.domain.service.ProductRegistrationService;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/products/{productId}/photo")
-public class RestaurantProductPhotoController {
+@RequestMapping(path = "/restaurants/{restaurantId}/products/{productId}/photo", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestaurantProductPhotoController implements RestaurantProductPhotoControllerOpenApi{
 
 	@Autowired
 	private ProductRegistrationService productRegistrationService;
@@ -48,14 +50,16 @@ public class RestaurantProductPhotoController {
 
 	@Autowired
 	private PhotoStorageService photoStorageService;
-
+	
+	
+	// ---------- @RequestPart - used in Swagger
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ProductPhotoDTO updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-			@Valid ProductPhotoInput productPhotoInput) throws IOException {
+			@Valid ProductPhotoInput productPhotoInput, @RequestPart(required = true) MultipartFile file) throws IOException {
 
 		Product product = productRegistrationService.searchOrFail(restaurantId, productId);
 
-		MultipartFile file = productPhotoInput.getFile();
+//		MultipartFile file = productPhotoInput.getFile();
 
 		ProductPhoto productPhoto = new ProductPhoto();
 		productPhoto.setProduct(product);
@@ -70,14 +74,14 @@ public class RestaurantProductPhotoController {
 
 	}
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping
 	public ProductPhotoDTO search(@PathVariable Long restaurantId, @PathVariable Long productId) {
 		ProductPhoto productPhoto = productPhotoService.searchOrFail(restaurantId, productId);
 
 		return productPhotoDTOConverter.toModel(productPhoto);
 	}
 
-	@GetMapping
+	@GetMapping(produces = MediaType.ALL_VALUE)
 	public ResponseEntity<?> getPhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		try {

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +27,14 @@ import com.mycompany.fooddelivery.api.converter.PaymentMethodDTOConverter;
 import com.mycompany.fooddelivery.api.deconverter.PaymentMethodInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.PaymentMethodDTO;
 import com.mycompany.fooddelivery.api.model.input.PaymentMethodInput;
+import com.mycompany.fooddelivery.api.openapi.controller.PaymentMethodControllerOpenApi;
 import com.mycompany.fooddelivery.domain.model.PaymentMethod;
 import com.mycompany.fooddelivery.domain.repository.PaymentMethodRepository;
 import com.mycompany.fooddelivery.domain.service.PaymentMethodRegistrationService;
 
 @RestController
-@RequestMapping("/payment-methods")
-public class PaymentMethodController {
+@RequestMapping(path = "/payment-methods", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PaymentMethodController implements PaymentMethodControllerOpenApi{
 
 	@Autowired
 	private PaymentMethodRepository paymentMethodRepository;

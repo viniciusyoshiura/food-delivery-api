@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycompany.fooddelivery.api.model.dto.DailySaleDTO;
+import com.mycompany.fooddelivery.api.openapi.controller.StatisticsControllerOpenApi;
 import com.mycompany.fooddelivery.domain.filter.DailySaleFilter;
 import com.mycompany.fooddelivery.domain.service.SaleQueryService;
 import com.mycompany.fooddelivery.domain.service.SalesReportService;
 
 @RestController
 @RequestMapping(path = "/statistics")
-public class StatisticsController {
+public class StatisticsController implements StatisticsControllerOpenApi {
 
 	@Autowired
 	private SaleQueryService saleQueryService;
@@ -35,7 +36,7 @@ public class StatisticsController {
 	}
 
 	@GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_PDF_VALUE)
-	public ResponseEntity<byte[]> consultarVendasDiariasPdf(DailySaleFilter filter,
+	public ResponseEntity<byte[]> queryDailySalesPdf(DailySaleFilter filter,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 
 		byte[] bytesPdf = salesReportService.issueDailySales(filter, timeOffset);

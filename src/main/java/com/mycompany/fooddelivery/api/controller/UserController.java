@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +23,14 @@ import com.mycompany.fooddelivery.api.model.dto.UserDTO;
 import com.mycompany.fooddelivery.api.model.input.PasswordInput;
 import com.mycompany.fooddelivery.api.model.input.UserInput;
 import com.mycompany.fooddelivery.api.model.input.UserWithPasswordInput;
+import com.mycompany.fooddelivery.api.openapi.controller.UserControllerOpenApi;
 import com.mycompany.fooddelivery.domain.model.User;
 import com.mycompany.fooddelivery.domain.repository.UserRepository;
 import com.mycompany.fooddelivery.domain.service.UserRegistrationService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserController {
+@RequestMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+public class UserController implements UserControllerOpenApi{
 
 	@Autowired
 	private UserRepository userRepository;
@@ -76,7 +78,7 @@ public class UserController {
 
 	@PutMapping("/{userId}/password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void alterarSenha(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {
+	public void changePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {
 		userRegistrationService.changePassword(userId, passwordInput.getCurrentPassword(),
 				passwordInput.getNewPassword());
 	}

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +25,7 @@ import com.mycompany.fooddelivery.api.converter.RestaurantInputConverter;
 import com.mycompany.fooddelivery.api.deconverter.RestaurantInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.RestaurantDTO;
 import com.mycompany.fooddelivery.api.model.input.RestaurantInput;
+import com.mycompany.fooddelivery.api.openapi.controller.RestaurantControllerOpenApi;
 import com.mycompany.fooddelivery.core.utils.ObjectMergeUtils;
 import com.mycompany.fooddelivery.core.utils.ValidationUtils;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
@@ -35,8 +37,8 @@ import com.mycompany.fooddelivery.domain.repository.RestaurantRepository;
 import com.mycompany.fooddelivery.domain.service.RestaurantRegistrationService;
 
 @RestController
-@RequestMapping(value = "/restaurants")
-public class RestaurantController {
+@RequestMapping(path = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestaurantController implements RestaurantControllerOpenApi{
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
