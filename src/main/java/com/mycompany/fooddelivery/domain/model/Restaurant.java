@@ -118,6 +118,38 @@ public class Restaurant {
 	    setOpen(false);
 	}
 	
+	public boolean isOpen() {
+	    return this.open;
+	}
+
+	public boolean isClosed() {
+	    return !isOpen();
+	}
+
+	public boolean isDeactive() {
+	    return !isActive();
+	}
+
+	public boolean isActive() {
+	    return this.active;
+	}
+
+	public boolean openningAllowed() {
+	    return isActive() && isClosed();
+	}
+
+	public boolean activationAllowed() {
+	    return isDeactive();
+	}
+
+	public boolean deactivationAllowed() {
+	    return isActive();
+	}
+
+	public boolean closureAllowed() {
+	    return isOpen();
+	}  
+	
 	public boolean removeResponsible(User user) {
 	    return getResponsibles().remove(user);
 	}

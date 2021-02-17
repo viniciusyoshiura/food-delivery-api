@@ -78,7 +78,7 @@ public class HateoasLinks {
 	    return linkToRestaurants(IanaLinkRelations.SELF.value());
 	}
 
-	public Link linkToRestaurantePaymentMethod(Long restaurantId, String rel) {
+	public Link linkToRestaurantPaymentMethod(Long restaurantId, String rel) {
 	    return linkTo(methodOn(RestaurantPaymentMethodController.class)
 	            .list(restaurantId)).withRel(rel);
 	}
@@ -90,6 +90,26 @@ public class HateoasLinks {
 
 	public Link linkToRestaurantResponsibleUser(Long restaurantId) {
 	    return linkToRestaurantResponsibleUser(restaurantId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToRestaurantOpenning(Long restaurantId, String rel) {
+	    return linkTo(methodOn(RestaurantController.class)
+	            .open(restaurantId)).withRel(rel);
+	}
+
+	public Link linkToRestaurantClosure(Long restaurantId, String rel) {
+	    return linkTo(methodOn(RestaurantController.class)
+	            .close(restaurantId)).withRel(rel);
+	}
+
+	public Link linkToRestaurantDeactivation(Long restaurantId, String rel) {
+	    return linkTo(methodOn(RestaurantController.class)
+	            .deactivate(restaurantId)).withRel(rel);
+	}
+
+	public Link linkToRestaurantActivation(Long restaurantId, String rel) {
+	    return linkTo(methodOn(RestaurantController.class)
+	            .activate(restaurantId)).withRel(rel);
 	}
 	
 	public Link linkToKitchen(Long kitchenId, String rel) {

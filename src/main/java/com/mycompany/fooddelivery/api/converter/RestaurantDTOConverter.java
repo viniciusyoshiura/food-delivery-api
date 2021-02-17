@@ -37,11 +37,31 @@ public class RestaurantDTOConverter extends RepresentationModelAssemblerSupport<
         restaurantDTO.getAddress().getCity().add(
                 hateoasLinks.linkToCity(restaurant.getAddress().getCity().getId()));
         
-        restaurantDTO.add(hateoasLinks.linkToRestaurantePaymentMethod(restaurant.getId(), 
+        restaurantDTO.add(hateoasLinks.linkToRestaurantPaymentMethod(restaurant.getId(), 
                 "payment-methods"));
         
         restaurantDTO.add(hateoasLinks.linkToRestaurantResponsibleUser(restaurant.getId(), 
                 "responsibles"));
+        
+        if (restaurant.activationAllowed()) {
+        	restaurantDTO.add(
+        			hateoasLinks.linkToRestaurantActivation(restaurant.getId(), "activate"));
+        }
+
+        if (restaurant.deactivationAllowed()) {
+        	restaurantDTO.add(
+        			hateoasLinks.linkToRestaurantDeactivation(restaurant.getId(), "deactivate"));
+        }
+
+        if (restaurant.openningAllowed()) {
+        	restaurantDTO.add(
+        			hateoasLinks.linkToRestaurantOpenning(restaurant.getId(), "open"));
+        }
+
+        if (restaurant.closureAllowed()) {
+        	restaurantDTO.add(
+        			hateoasLinks.linkToRestaurantClosure(restaurant.getId(), "close"));
+        }
 		
         return restaurantDTO;
 	}
