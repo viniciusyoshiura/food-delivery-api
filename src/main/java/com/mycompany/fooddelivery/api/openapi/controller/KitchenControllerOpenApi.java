@@ -2,9 +2,9 @@ package com.mycompany.fooddelivery.api.openapi.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponses;
 public interface KitchenControllerOpenApi {
 
 	@ApiOperation("Kitchens list with pagination")
-	Page<KitchenDTO> list(@PageableDefault(size = 10) Pageable pageable);
+	PagedModel<KitchenDTO> list(@PageableDefault(size = 10) Pageable pageable);
 
 	@ApiOperation("Searchs a kitchen by ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid kitchen ID", response = Problem.class),

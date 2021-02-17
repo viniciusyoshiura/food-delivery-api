@@ -1,9 +1,8 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,7 +20,7 @@ import io.swagger.annotations.ApiResponses;
 public interface StateControllerOpenApi {
 
 	@ApiOperation("Lists all states")
-	List<StateDTO> list();
+	CollectionModel<StateDTO> list();
 
 	@ApiOperation("Searchs a state by ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid state ID", response = Problem.class),

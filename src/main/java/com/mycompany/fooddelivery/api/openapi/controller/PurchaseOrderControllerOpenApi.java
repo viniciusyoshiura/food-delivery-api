@@ -2,9 +2,9 @@ package com.mycompany.fooddelivery.api.openapi.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -28,7 +28,7 @@ public interface PurchaseOrderControllerOpenApi {
 	@ApiImplicitParams({
 			@ApiImplicitParam(value = "Property names to filter in the response, separated by commas", name = "fields", paramType = "query", type = "string") })
 	@ApiOperation("Search order with filter")
-	Page<PurchaseOrderSummaryDTO> listWithFilters(PurchaseOrderFilter filter,
+	PagedModel<PurchaseOrderSummaryDTO> listWithFilters(PurchaseOrderFilter filter,
 			@PageableDefault(size = 10) Pageable pageable);
 
 	// ---------- ApiImplicitParams: includes Squiggly parameter in Swagger

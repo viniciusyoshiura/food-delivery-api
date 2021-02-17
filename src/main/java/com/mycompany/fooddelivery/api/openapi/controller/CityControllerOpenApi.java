@@ -1,9 +1,8 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,7 @@ public interface CityControllerOpenApi {
 	// ---------- @ApiOperation - describes the endpoint in Swagger
 	@ApiOperation("List all cities")
 	@GetMapping
-	List<CityDTO> list();
+	CollectionModel<CityDTO> list();
 
 	// ---------- @ApiOperation - describes the endpoint in Swagger
 	// ---------- @ApiParam - describes the parameter in Swagger

@@ -2,13 +2,15 @@ package com.mycompany.fooddelivery.api.model.dto;
 
 import java.math.BigDecimal;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class ItemPurchaseOrderDTO {
+public class ItemPurchaseOrderDTO extends RepresentationModel<ItemPurchaseOrderDTO> {
 	
 	@ApiModelProperty(example = "1")
 	private Long productId;

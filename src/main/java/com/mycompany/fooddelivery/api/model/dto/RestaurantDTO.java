@@ -2,26 +2,27 @@ package com.mycompany.fooddelivery.api.model.dto;
 
 import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.mycompany.fooddelivery.api.model.view.RestaurantView;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "restaurants")
 @Setter
 @Getter
-public class RestaurantDTO {
+public class RestaurantDTO extends RepresentationModel<RestaurantDTO> {
 	
-	@JsonView({ RestaurantView.Summary.class, RestaurantView.OnlyName.class })
+//	@JsonView({ RestaurantView.Summary.class, RestaurantView.OnlyName.class })
 	private Long id;
 	
-	@JsonView({ RestaurantView.Summary.class, RestaurantView.OnlyName.class })
+//	@JsonView({ RestaurantView.Summary.class, RestaurantView.OnlyName.class })
 	private String name;
 	
-	@JsonView({ RestaurantView.Summary.class})
+//	@JsonView({ RestaurantView.Summary.class})
 	private BigDecimal shippingFee;
 	
-	@JsonView({ RestaurantView.Summary.class})
+//	@JsonView({ RestaurantView.Summary.class})
 	private KitchenDTO kitchen;
 	
 	private Boolean active;

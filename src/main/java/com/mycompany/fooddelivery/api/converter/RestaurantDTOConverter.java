@@ -1,39 +1,58 @@
 package com.mycompany.fooddelivery.api.converter;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.mycompany.fooddelivery.api.HateoasLinks;
+import com.mycompany.fooddelivery.api.controller.RestaurantController;
 import com.mycompany.fooddelivery.api.model.dto.RestaurantDTO;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
 
 @Component
-public class RestaurantDTOConverter {
+public class RestaurantDTOConverter extends RepresentationModelAssemblerSupport<Restaurant, RestaurantDTO> {
 
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private HateoasLinks hateoasLinks;
+	
+	public RestaurantDTOConverter() {
+        super(RestaurantController.class, RestaurantDTO.class);
+    }
+	
 	public RestaurantDTO toModel(Restaurant restaurant) {
-//		KitchenDTO kitchenDTO = new KitchenDTO();
-//		kitchenDTO.setId(restaurant.getKitchen().getId());
-//		kitchenDTO.setName(restaurant.getKitchen().getName());
-//		
-//		RestaurantDTO restaurantDTO = new RestaurantDTO();
-//		restaurantDTO.setId(restaurant.getId());
-//		restaurantDTO.setName(restaurant.getName());
-//		restaurantDTO.setShippingFee(restaurant.getShippingFee());
-//		restaurantDTO.setKitchen(kitchenDTO);
-//		return restaurantDTO;
-		return modelMapper.map(restaurant, RestaurantDTO.class);
+		System.out.println("restaurant Id: " + restaurant.getId());
+		RestaurantDTO restaurantDTO = createModelWithId(restaurant.getId(), restaurant);
+		modelMapper.map(restaurant, restaurantDTO);
+		
+		restaurantDTO.add(hateoasLinks.linkToRestaurants("restaurants"));
+        
+        restaurantDTO.getKitchen().add(
+                hateoasLinks.linkToKitchen(restaurant.getKitchen().getId()));
+        
+        restaurantDTO.getAddress().getCity().add(
+                hateoasLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        
+        restaurantDTO.add(hateoasLinks.linkToRestaurantePaymentMethod(restaurant.getId(), 
+                "payment-methods"));
+        
+        restaurantDTO.add(hateoasLinks.linkToRestaurantResponsibleUser(restaurant.getId(), 
+                "responsibles"));
+		
+        return restaurantDTO;
 	}
 	
-	public List<RestaurantDTO> toCollectionModel(List<Restaurant> restaurants) {
-		return restaurants.stream()
-				.map(restaurant -> toModel(restaurant))
-				.collect(Collectors.toList());
+	@Override
+	public CollectionModel<RestaurantDTO> toCollectionModel(Iterable<? extends Restaurant> entities) {
+//		return restaurants.stream()
+//				.map(restaurant -> toModel(restaurant))
+//				.collect(Collectors.toList());
+		return super.toCollectionModel(entities)
+                .add(hateoasLinks.linkToRestaurants());
 	}
 	
 }

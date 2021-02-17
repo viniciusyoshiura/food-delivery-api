@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +46,7 @@ public class UserController implements UserControllerOpenApi{
 	private UserInputDeconverter userInputDeconverter;
 
 	@GetMapping
-	public List<UserDTO> list() {
+	public CollectionModel<UserDTO> list() {
 		List<User> allUsers = userRepository.findAll();
 
 		return userDTOConverter.toCollectionModel(allUsers);

@@ -113,7 +113,7 @@ public class PurchaseOrder extends AbstractAggregateRoot<PurchaseOrder>{
 	}
 	
 	public void cancel() {
-		setStatus(StatusPurchaseOrder.CANCELED);
+		setStatus(StatusPurchaseOrder.CANCELLED);
 		setDateCancellation(OffsetDateTime.now());
 		
 		// ---------- Registering the event to be triggered when the PurchaseOrder is canceled
@@ -129,6 +129,18 @@ public class PurchaseOrder extends AbstractAggregateRoot<PurchaseOrder>{
 		}
 		
 		this.status = newStatusPurchaseOrder;
+	}
+	
+	public boolean canBeConfirmed() {
+		return getStatus().canUpdateTo(StatusPurchaseOrder.CONFIRMED);
+	}
+	
+	public boolean canBeDelivered() {
+		return getStatus().canUpdateTo(StatusPurchaseOrder.DELIVERED);
+	}
+	
+	public boolean canBeCancelled() {
+		return getStatus().canUpdateTo(StatusPurchaseOrder.CANCELLED);
 	}
 	
 	@PrePersist

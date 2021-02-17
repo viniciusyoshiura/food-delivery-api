@@ -1,6 +1,6 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.UserDTO;
@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 public interface UserControllerOpenApi {
 
 	@ApiOperation("Lists all users")
-	public List<UserDTO> list();
+	public CollectionModel<UserDTO> list();
 
 	@ApiOperation("Searches a user by ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid user ID", response = Problem.class),

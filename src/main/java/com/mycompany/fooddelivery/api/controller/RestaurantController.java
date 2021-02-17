@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,10 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.fooddelivery.api.converter.RestaurantBasicDTOConverter;
 import com.mycompany.fooddelivery.api.converter.RestaurantDTOConverter;
 import com.mycompany.fooddelivery.api.converter.RestaurantInputConverter;
+import com.mycompany.fooddelivery.api.converter.RestaurantOnlyNameDTOConverter;
 import com.mycompany.fooddelivery.api.deconverter.RestaurantInputDeconverter;
+import com.mycompany.fooddelivery.api.model.dto.RestaurantBasicDTO;
 import com.mycompany.fooddelivery.api.model.dto.RestaurantDTO;
+import com.mycompany.fooddelivery.api.model.dto.RestaurantOnlyNameDTO;
 import com.mycompany.fooddelivery.api.model.input.RestaurantInput;
 import com.mycompany.fooddelivery.api.openapi.controller.RestaurantControllerOpenApi;
 import com.mycompany.fooddelivery.core.utils.ObjectMergeUtils;
@@ -61,10 +67,25 @@ public class RestaurantController implements RestaurantControllerOpenApi{
 	@Autowired
 	private ObjectMergeUtils objectMergeUtils;
 	
+	@Autowired
+	private RestaurantBasicDTOConverter restaurantBasicDTOConverter;
+
+	@Autowired
+	private RestaurantOnlyNameDTOConverter restaurantOnlyNameDTOConverter;  
+	
+	@Override
 	@GetMapping
-	public List<RestaurantDTO> list() {
-		return restaurantDTOConverter.toCollectionModel(restaurantRepository.findAll());
+	public CollectionModel<RestaurantBasicDTO> list() {
+		return restaurantBasicDTOConverter.toCollectionModel(restaurantRepository.findAll());
 	}
+	
+	@Override
+//	@JsonView(RestauranteView.ApenasNome.class)
+    @GetMapping(params = "format=only-name")
+    public CollectionModel<RestaurantOnlyNameDTO> listOnlyNames() {
+        return restaurantOnlyNameDTOConverter
+                .toCollectionModel(restaurantRepository.findAll());
+    }
 	
 	// --------- JsonView manipulates the JSON (DTOs)
 //	@JsonView(RestaurantView.Summary.class)
@@ -98,6 +119,7 @@ public class RestaurantController implements RestaurantControllerOpenApi{
 //		return restaurantsWrapper;
 //	}
 	
+	@Override
 	@GetMapping("/{restaurantId}")
 	public RestaurantDTO search(@PathVariable Long restaurantId) {
 		Restaurant restaurant = restaurantRegistrationService.searchOrFail(restaurantId);
@@ -154,14 +176,17 @@ public class RestaurantController implements RestaurantControllerOpenApi{
 	
 	@PutMapping("/{restaurantId}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void activate(@PathVariable Long restaurantId) {
+	public ResponseEntity<Void> activate(@PathVariable Long restaurantId) {
 		restaurantRegistrationService.activate(restaurantId);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{restaurantId}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deactivate(@PathVariable Long restaurantId) {
+	public ResponseEntity<Void> deactivate(@PathVariable Long restaurantId) {
 		restaurantRegistrationService.deactivate(restaurantId);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/activations")
@@ -186,13 +211,15 @@ public class RestaurantController implements RestaurantControllerOpenApi{
 	
 	@PutMapping("/{restaurantId}/opening")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void open(@PathVariable Long restaurantId) {
+	public ResponseEntity<Void> open(@PathVariable Long restaurantId) {
 		restaurantRegistrationService.open(restaurantId);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/{restaurantId}/closure")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void close(@PathVariable Long restaurantId) {
+	public ResponseEntity<Void> close(@PathVariable Long restaurantId) {
 		restaurantRegistrationService.close(restaurantId);
+		return ResponseEntity.noContent().build();
 	} 
 }

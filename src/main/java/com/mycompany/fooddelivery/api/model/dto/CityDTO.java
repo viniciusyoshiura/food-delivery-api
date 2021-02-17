@@ -1,12 +1,17 @@
 package com.mycompany.fooddelivery.api.model.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+// ---------- @Relation: changes the name of return array to 'cities' (hateoas)
+@Relation(collectionRelation = "cities")
 @Setter
 @Getter
-public class CityDTO {
+public class CityDTO extends RepresentationModel<CityDTO>{
 
 	
 	@ApiModelProperty(example = "1")

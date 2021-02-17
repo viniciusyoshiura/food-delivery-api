@@ -1,15 +1,15 @@
 package com.mycompany.fooddelivery.api.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +27,7 @@ import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderDTO;
 import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderSummaryDTO;
 import com.mycompany.fooddelivery.api.model.input.PurchaseOrderInput;
 import com.mycompany.fooddelivery.api.openapi.controller.PurchaseOrderControllerOpenApi;
+import com.mycompany.fooddelivery.core.data.PageWrapper;
 import com.mycompany.fooddelivery.core.data.PageableTranslator;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
@@ -56,51 +57,39 @@ public class PurchaseOrderController implements PurchaseOrderControllerOpenApi {
 	@Autowired
 	private PurchaseOrderInputDeconverter purchaseOrderInputDeconverter;
 	
+	@Autowired
+	private PagedResourcesAssembler<PurchaseOrder> pagedResourcesAssembler;
+	
 	// ---------- See SquigglyConfig.squigglyRequestFilter, which limits the JSON return fields
 	// ---------- See PageJsonSerializer, which sets the Pageable return object
 	// ---------- PurchaseOrderFilter gets the parameter filters
 	// ---------- Pageable includes pagination parameters
 	@GetMapping
-	public Page<PurchaseOrderSummaryDTO> listWithFilters(PurchaseOrderFilter filter,
+	public PagedModel<PurchaseOrderSummaryDTO> listWithFilters(PurchaseOrderFilter filter,
 			@PageableDefault(size = 10) Pageable pageable) {
 		
 		// ---------- Convert Pageable of parameter to a domain Pageable
 		// ---------- e.g. map -> sort = userName to user.name
-		pageable = convertPageable(pageable);
+		Pageable translatedPageable = convertPageable(pageable);
 		
 		// ---------- PurchaseOrderSpecs applies filters in query
 		Page<PurchaseOrder> purchaseOrdersPage = purchaseOrderRepository.findAll(PurchaseOrderSpecs.usingFilter(filter),
-				pageable);
-
-		List<PurchaseOrderSummaryDTO> purchaseOrderSummaryDTOs = purchaseOrderSummaryDTOConverter
-				.toCollectionModel(purchaseOrdersPage.getContent());
+				translatedPageable);
 		
-		// ---------- Instantiate new Page object in order to return
-		Page<PurchaseOrderSummaryDTO> purchaseOrderSummaryDTOPage = new PageImpl<>(purchaseOrderSummaryDTOs, pageable,
-				purchaseOrdersPage.getTotalElements());
-
-		return purchaseOrderSummaryDTOPage;
+		purchaseOrdersPage = new PageWrapper<>(purchaseOrdersPage, pageable);
+		
+		return pagedResourcesAssembler.toModel(purchaseOrdersPage, purchaseOrderSummaryDTOConverter);
+		
+//		List<PurchaseOrderSummaryDTO> purchaseOrderSummaryDTOs = purchaseOrderSummaryDTOConverter
+//				.toCollectionModel(purchaseOrdersPage.getContent());
+//		
+//		// ---------- Instantiate new Page object in order to return
+//		Page<PurchaseOrderSummaryDTO> purchaseOrderSummaryDTOPage = new PageImpl<>(purchaseOrderSummaryDTOs, pageable,
+//				purchaseOrdersPage.getTotalElements());
+//
+//		return purchaseOrderSummaryDTOPage;
 
 	}
-
-//    @GetMapping
-//	public MappingJacksonValue list(@RequestParam(required = false) String fields) {
-//		List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
-//		List<PurchaseOrderSummaryDTO> purchaseOrderDTOs = purchaseOrderSummaryDTOConverter.toCollectionModel(purchaseOrders);  
-//		
-//		MappingJacksonValue purchaseOrdersWrapper = new MappingJacksonValue(purchaseOrderDTOs);
-//		
-//		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-//		filterProvider.addFilter("filterPurchaseOrder", SimpleBeanPropertyFilter.serializeAll());
-//		
-//		if (StringUtils.isNotBlank(fields)) {
-//			filterProvider.addFilter("filterPurchaseOrder", SimpleBeanPropertyFilter.filterOutAllExcept(fields.split(",")));
-//		}
-//		
-//		purchaseOrdersWrapper.setFilters(filterProvider);
-//		
-//		return purchaseOrdersWrapper;
-//	}
 	
 	@GetMapping("/{purchaseOrderUuid}")
 	public PurchaseOrderDTO search(@PathVariable String purchaseOrderUuid) {
@@ -131,7 +120,7 @@ public class PurchaseOrderController implements PurchaseOrderControllerOpenApi {
 	private Pageable convertPageable(Pageable pageable) {
 		var mapping = Map.of(
 				"uuid", "uuid",
-				"restaurant.name", "restaurant.name",
+				"restaurantName", "restaurant.name",
 				"userName", "user.name",
 				"totalValue", "totalValue",
 				"stauts", "status",

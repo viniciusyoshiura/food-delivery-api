@@ -1,4 +1,4 @@
-package com.mycompany.fooddelivery.core.openapi;
+package com.mycompany.fooddelivery.core.springfox;
 
 import java.io.File;
 import java.io.InputStream;

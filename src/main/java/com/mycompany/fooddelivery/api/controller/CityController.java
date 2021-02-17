@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import com.mycompany.fooddelivery.api.deconverter.CityInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.CityDTO;
 import com.mycompany.fooddelivery.api.model.input.CityInput;
 import com.mycompany.fooddelivery.api.openapi.controller.CityControllerOpenApi;
+import com.mycompany.fooddelivery.api.utils.ResourceUriHelper;
 import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.StateNotFoundException;
 import com.mycompany.fooddelivery.domain.model.City;
@@ -46,16 +48,29 @@ public class CityController implements CityControllerOpenApi{
 	private CityInputDeconverter cityInputDeconverter;
 
 	@GetMapping
-	public List<CityDTO> list() {
+	public CollectionModel<CityDTO> list() {
 		List<City> cities = cityRepository.findAll();
 		return cityDTOConverter.toCollectionModel(cities);
+		
 	}
 
 	@GetMapping("/{cityId}")
 	public CityDTO search(@PathVariable Long cityId) {
 		City city = cityRegistrationService.searchOrFail(cityId);
-
+		
 		return cityDTOConverter.toModel(city);
+		
+		// ---------- Creating links from class method (hateoas)
+//		cityDTO.add(linkTo(methodOn(CityController.class)
+//				.search(cityDTO.getId())).withSelfRel());
+//		
+//		cityDTO.add(linkTo(methodOn(CityController.class)
+//				.list()).withRel("cities"));
+//		
+//		cityDTO.getState().add(linkTo(methodOn(StateController.class)
+//				.search(cityDTO.getState().getId())).withSelfRel());
+//	
+//		return cityDTO;
 	}
 
 	@PostMapping
@@ -65,8 +80,13 @@ public class CityController implements CityControllerOpenApi{
 			City city = cityInputDeconverter.toDomainObject(cityInput);
 
 			city = cityRegistrationService.save(city);
-
-			return cityDTOConverter.toModel(city);
+			
+			CityDTO cityDTO = cityDTOConverter.toModel(city);
+			
+			// ---------- Adding created resource in response header
+			ResourceUriHelper.addUriInResponseHeader(cityDTO.getId());
+			
+			return cityDTO;
 		} catch (StateNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}

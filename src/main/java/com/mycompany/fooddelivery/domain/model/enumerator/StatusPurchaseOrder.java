@@ -8,7 +8,7 @@ public enum StatusPurchaseOrder {
 	CREATED("Created"),
 	CONFIRMED("Confirmed", CREATED),
 	DELIVERED("Delivered", CONFIRMED),
-	CANCELED("Canceled", CREATED);
+	CANCELLED("Cancelled", CREATED);
 	
 	private String description;
 	private List<StatusPurchaseOrder> previousStatus;
@@ -24,5 +24,9 @@ public enum StatusPurchaseOrder {
 	
 	public boolean cannotUpdateTo(StatusPurchaseOrder newStatus) {
 		return !newStatus.previousStatus.contains(this);
+	}
+	
+	public boolean canUpdateTo(StatusPurchaseOrder newStatus) {
+		return !cannotUpdateTo(newStatus);
 	}
 }

@@ -1,29 +1,41 @@
 package com.mycompany.fooddelivery.api.converter;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.mycompany.fooddelivery.api.HateoasLinks;
+import com.mycompany.fooddelivery.api.controller.KitchenController;
 import com.mycompany.fooddelivery.api.model.dto.KitchenDTO;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
 
 @Component
-public class KitchenDTOConverter {
+public class KitchenDTOConverter extends RepresentationModelAssemblerSupport<Kitchen, KitchenDTO> {
 
 	@Autowired
     private ModelMapper modelMapper;
     
+	@Autowired
+	private HateoasLinks hateoasLinks;
+	
+	public KitchenDTOConverter() {
+		super(KitchenController.class, KitchenDTO.class);
+	}
+	
     public KitchenDTO toModel(Kitchen kitchen) {
-        return modelMapper.map(kitchen, KitchenDTO.class);
+    	KitchenDTO kitchenDTO = createModelWithId(kitchen.getId(), kitchen);
+		modelMapper.map(kitchen, kitchenDTO);
+		
+		kitchenDTO.add(hateoasLinks.linkToKitchens("kitchens"));
+		
+		return kitchenDTO;
     }
     
-    public List<KitchenDTO> toCollectionModel(List<Kitchen> kitchens) {
-        return kitchens.stream()
-                .map(kitchen -> toModel(kitchen))
-                .collect(Collectors.toList());
-    }  
+//    public CollectionModel<KitchenDTO> toCollectionModel(List<Kitchen> kitchens) {
+//        return kitchens.stream()
+//                .map(kitchen -> toModel(kitchen))
+//                .collect(Collectors.toList());
+//    }  
 	
 }

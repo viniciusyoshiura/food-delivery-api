@@ -1,7 +1,5 @@
 package com.mycompany.fooddelivery.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,15 +47,22 @@ public class KitchenController implements KitchenControllerOpenApi{
 	@Autowired
 	private KitchenInputDeconverter kitchenInputDeconverter;    
 	
+	@Autowired
+	private PagedResourcesAssembler<Kitchen> pagedResourcesAssembler;
+	
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public Page<KitchenDTO> list(@PageableDefault(size = 10) Pageable pageable) {
+	public PagedModel<KitchenDTO> list(@PageableDefault(size = 10) Pageable pageable) {
 		Page<Kitchen> pageKitchens = kitchenRepository.findAll(pageable);
 	    
-		List<KitchenDTO> kitchenDTOs = kitchenDTOConverter.toCollectionModel(pageKitchens.getContent());
+		PagedModel<KitchenDTO> pagedModelKitchens = pagedResourcesAssembler.toModel(pageKitchens, kitchenDTOConverter);
 		
-		Page<KitchenDTO> kitchenDTOsPage = new PageImpl<>(kitchenDTOs, pageable, pageKitchens.getTotalElements());
+		return pagedModelKitchens;
 		
-		return kitchenDTOsPage;
+//		List<KitchenDTO> kitchenDTOs = kitchenDTOConverter.toCollectionModel(pageKitchens.getContent());
+//		
+//		Page<KitchenDTO> kitchenDTOsPage = new PageImpl<>(kitchenDTOs, pageable, pageKitchens.getTotalElements());
+//		
+//		return kitchenDTOsPage;
 	}
 
 	@GetMapping(value = "/{listXml}", produces = MediaType.APPLICATION_XML_VALUE)

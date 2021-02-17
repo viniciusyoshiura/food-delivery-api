@@ -3,6 +3,7 @@ package com.mycompany.fooddelivery.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,20 +22,23 @@ public class PurchaseOrderStatusFlowController implements PurchaseOrderStatusFlo
 	
 	@PutMapping("/confirmation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirm(@PathVariable String purchaseOrderUuid) {
+	public ResponseEntity<Void> confirm(@PathVariable String purchaseOrderUuid) {
 		purchaseOrderStatusFlowService.confirm(purchaseOrderUuid);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/cancellation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancel(@PathVariable String purchaseOrderUuid) {
+	public ResponseEntity<Void> cancel(@PathVariable String purchaseOrderUuid) {
 		purchaseOrderStatusFlowService.cancel(purchaseOrderUuid);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/delivery")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deliver(@PathVariable String purchaseOrderUuid) {
+	public ResponseEntity<Void> deliver(@PathVariable String purchaseOrderUuid) {
 		purchaseOrderStatusFlowService.deliver(purchaseOrderUuid);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

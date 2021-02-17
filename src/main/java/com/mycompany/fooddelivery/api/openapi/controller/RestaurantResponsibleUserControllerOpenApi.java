@@ -1,6 +1,6 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.UserDTO;
@@ -16,7 +16,7 @@ public interface RestaurantResponsibleUserControllerOpenApi {
 
 	@ApiOperation("Lists users responsible for restaurant")
 	@ApiResponses({ @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class) })
-	List<UserDTO> list(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId);
+	CollectionModel<UserDTO> list(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId);
 	
 	@ApiOperation("Restaurant responsible disassociation")
     @ApiResponses({

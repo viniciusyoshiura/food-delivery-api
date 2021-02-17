@@ -3,13 +3,18 @@ package com.mycompany.fooddelivery.api.model.dto;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "orders")
 @Setter
 @Getter
-public class PurchaseOrderSummaryDTO {
+public class PurchaseOrderSummaryDTO extends RepresentationModel<PurchaseOrderSummaryDTO> {
+	
 	
 	@ApiModelProperty(example = "f9981ca4-5a5e-4da3-af04-933861df3e55")
 	private String uuid;
@@ -29,7 +34,7 @@ public class PurchaseOrderSummaryDTO {
 	@ApiModelProperty(example = "2021-01-01T00:00:01Z")
     private OffsetDateTime dateRegister;
 	
-    private RestaurantSummaryDTO restaurant;
+    private RestaurantOnlyNameDTO restaurant;
     private UserDTO user; 
 	
 }
