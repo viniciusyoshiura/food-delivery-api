@@ -1,6 +1,7 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.UserDTO;
@@ -24,7 +25,7 @@ public interface RestaurantResponsibleUserControllerOpenApi {
         @ApiResponse(code = 404, message = "Restaurant or user not found", 
             response = Problem.class)
     })
-	void disassociate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
+	ResponseEntity<Void> disassociate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
 			@ApiParam(value = "User ID", example = "1", required = true) Long userId);
 	
 	 @ApiOperation("Restaraunt responsbile association")
@@ -33,7 +34,7 @@ public interface RestaurantResponsibleUserControllerOpenApi {
 	        @ApiResponse(code = 404, message = "Restaurant or user not found", 
 	            response = Problem.class)
 	    })
-	void associate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
+	 ResponseEntity<Void> associate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
 			@ApiParam(value = "User ID", example = "1", required = true) Long userId);
 
 }

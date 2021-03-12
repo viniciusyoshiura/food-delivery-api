@@ -3,6 +3,7 @@ package com.mycompany.fooddelivery.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.fooddelivery.api.HateoasLinks;
 import com.mycompany.fooddelivery.api.model.dto.DailySaleDTO;
 import com.mycompany.fooddelivery.api.openapi.controller.StatisticsControllerOpenApi;
 import com.mycompany.fooddelivery.domain.filter.DailySaleFilter;
@@ -26,6 +28,9 @@ public class StatisticsController implements StatisticsControllerOpenApi {
 
 	@Autowired
 	private SalesReportService salesReportService;
+	
+	@Autowired
+	private HateoasLinks hateoasLinks;
 
 	@GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DailySaleDTO> queryDailySales(DailySaleFilter filter,
@@ -48,6 +53,19 @@ public class StatisticsController implements StatisticsControllerOpenApi {
 			.contentType(MediaType.APPLICATION_PDF)
 			.headers(headers)
 			.body(bytesPdf);
+	}
+	
+	@Override
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public StatisticsDTO statistics() {
+	    var statisticsDTO = new StatisticsDTO();
+	    
+	    statisticsDTO.add(hateoasLinks.linkToStatisticsDailySales("daily-sales"));
+	    
+	    return statisticsDTO;
+	} 
+	
+	public static class StatisticsDTO extends RepresentationModel<StatisticsDTO> {
 	}
 
 }

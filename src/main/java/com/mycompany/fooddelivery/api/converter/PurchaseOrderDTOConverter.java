@@ -32,7 +32,7 @@ public class PurchaseOrderDTOConverter extends RepresentationModelAssemblerSuppo
 		modelMapper.map(purchaseOrder, purchaseOrderDTO);
 		
 		// ---------- Adding links to PurchaseOrder
-		purchaseOrderDTO.add(hateoasLinks.linkToPurchaseOrders());
+		purchaseOrderDTO.add(hateoasLinks.linkToPurchaseOrders("purchase-orders"));
 		
 		// ---------- Adding links to PurchaseOrderStatus
 		if(purchaseOrder.canBeConfirmed()) {

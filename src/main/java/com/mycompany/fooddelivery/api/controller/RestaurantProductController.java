@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.fooddelivery.api.HateoasLinks;
 import com.mycompany.fooddelivery.api.converter.ProductDTOConverter;
 import com.mycompany.fooddelivery.api.deconverter.ProductInputDeconverter;
 import com.mycompany.fooddelivery.api.model.dto.ProductDTO;
@@ -47,20 +49,24 @@ public class RestaurantProductController implements RestaurantProductControllerO
 	@Autowired
 	private ProductInputDeconverter productInputDeconverter;
 
+	@Autowired
+	private HateoasLinks hateoasLinks;
+	
 	@GetMapping
-	public List<ProductDTO> list(@PathVariable Long restaurantId,
-			@RequestParam(required = false) boolean includeInactives) {
+	public CollectionModel<ProductDTO> list(@PathVariable Long restaurantId,
+			@RequestParam(required = false) Boolean includeInactives) {
 		Restaurant restaurant = restaurantRegistrationService.searchOrFail(restaurantId);
 
 		List<Product> allProducts = null;
 		
-		if (includeInactives) {
+		if (includeInactives == null || includeInactives) {
 			allProducts = productRepository.findByRestaurant(restaurant);
 		} else {
 			allProducts = productRepository.findActivesByRestaurant(restaurant);
 		}
 
-		return productDTOConverter.toCollectionModel(allProducts);
+		return productDTOConverter.toCollectionModel(allProducts)
+	            .add(hateoasLinks.linkToProducts(restaurantId));
 	}
 
 	@GetMapping("/{productId}")
@@ -94,5 +100,6 @@ public class RestaurantProductController implements RestaurantProductControllerO
 
 		return productDTOConverter.toModel(currentProduct);
 	}
+
 
 }

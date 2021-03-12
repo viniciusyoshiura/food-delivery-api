@@ -34,14 +34,19 @@ public class RestaurantDTOConverter extends RepresentationModelAssemblerSupport<
         restaurantDTO.getKitchen().add(
                 hateoasLinks.linkToKitchen(restaurant.getKitchen().getId()));
         
-        restaurantDTO.getAddress().getCity().add(
-                hateoasLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        if (restaurantDTO.getAddress() != null 
+                && restaurantDTO.getAddress().getCity() != null) {
+        	restaurantDTO.getAddress().getCity().add(
+                    hateoasLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        }
         
         restaurantDTO.add(hateoasLinks.linkToRestaurantPaymentMethod(restaurant.getId(), 
                 "payment-methods"));
         
         restaurantDTO.add(hateoasLinks.linkToRestaurantResponsibleUser(restaurant.getId(), 
                 "responsibles"));
+        
+        restaurantDTO.add(hateoasLinks.linkToProducts(restaurant.getId(), "products"));
         
         if (restaurant.activationAllowed()) {
         	restaurantDTO.add(
@@ -62,7 +67,7 @@ public class RestaurantDTOConverter extends RepresentationModelAssemblerSupport<
         	restaurantDTO.add(
         			hateoasLinks.linkToRestaurantClosure(restaurant.getId(), "close"));
         }
-		
+	
         return restaurantDTO;
 	}
 	

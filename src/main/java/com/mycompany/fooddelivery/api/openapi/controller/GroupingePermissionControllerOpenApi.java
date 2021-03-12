@@ -1,6 +1,7 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.PermissionDTO;
@@ -17,7 +18,7 @@ public interface GroupingePermissionControllerOpenApi {
 	@ApiOperation("List of permissions associated with a group")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid group ID", response = Problem.class),
 			@ApiResponse(code = 404, message = "Group not found", response = Problem.class) })
-	public List<PermissionDTO> list(@ApiParam(value = "Group ID", example = "1", required = true) Long groupId);
+	public CollectionModel<PermissionDTO> list(@ApiParam(value = "Group ID", example = "1", required = true) Long groupId);
 	
 	@ApiOperation("Disassociation of group permission")
     @ApiResponses({
@@ -25,7 +26,7 @@ public interface GroupingePermissionControllerOpenApi {
         @ApiResponse(code = 404, message = "Group or permission not found", 
             response = Problem.class)
     })
-	public void disassociate(@ApiParam(value = "Group ID", example = "1", required = true) Long groupId,
+	public ResponseEntity<Void> disassociate(@ApiParam(value = "Group ID", example = "1", required = true) Long groupId,
 			@ApiParam(value = "Permission ID", example = "1", required = true) Long permissionId);
 	
 	@ApiOperation("Association of group permission")
@@ -34,7 +35,7 @@ public interface GroupingePermissionControllerOpenApi {
         @ApiResponse(code = 404, message = "Group or permission not found", 
             response = Problem.class)
     })
-	public void associate(@ApiParam(value = "Group ID", example = "1", required = true) Long groupId,
+	public ResponseEntity<Void> associate(@ApiParam(value = "Group ID", example = "1", required = true) Long groupId,
 			@ApiParam(value = "Permission ID", example = "1", required = true) Long permissionId);
 
 }

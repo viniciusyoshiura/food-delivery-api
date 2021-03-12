@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi{
 	private PaymentMethodInputDeconverter paymentMethodInputDeconverter;
 
 	@GetMapping
-	public ResponseEntity<List<PaymentMethodDTO>> list(ServletWebRequest request) {
+	public ResponseEntity<CollectionModel<PaymentMethodDTO>> list(ServletWebRequest request) {
 		
 		// ---------- Disabling shallowEtag in order to use Deep ETag (see WebConfig)
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -74,8 +75,8 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi{
 //
 //		return paymentMethodDTOConverter.toCollectionModel(allPaymentMethods);
 //		
-		List<PaymentMethodDTO> paymentMethodDTOs = paymentMethodDTOConverter
-				.toCollectionModel(allPaymentMethods);
+		CollectionModel<PaymentMethodDTO> paymentMethodDTOs = 
+				paymentMethodDTOConverter.toCollectionModel(allPaymentMethods);
 		
 		return ResponseEntity.ok()
 				// ---------- MaxAge sets the max age of cache

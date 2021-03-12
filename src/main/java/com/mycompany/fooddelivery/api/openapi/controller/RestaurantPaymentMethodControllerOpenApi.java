@@ -1,6 +1,8 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
+
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.PaymentMethodDTO;
@@ -16,18 +18,18 @@ public interface RestaurantPaymentMethodControllerOpenApi {
 
 	@ApiOperation("Lists restaurants payment methods")
 	@ApiResponses({ @ApiResponse(code = 404, message = "Restaurant not found", response = Problem.class) })
-	List<PaymentMethodDTO> list(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId);
+	CollectionModel<PaymentMethodDTO> list(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId);
 
 	@ApiOperation("Disassociation of restaurant with payment method")
 	@ApiResponses({ @ApiResponse(code = 204, message = "Disassociation successfully registered"),
 			@ApiResponse(code = 404, message = "Restaurant or payment method not found", response = Problem.class) })
-	void disassociate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
+	ResponseEntity<Void> disassociate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
 			@ApiParam(value = "Payment method ID", example = "1", required = true) Long paymentMethodId);
 
 	@ApiOperation("Association of restaurant with payment method")
 	@ApiResponses({ @ApiResponse(code = 204, message = "Association successfully registered"),
 			@ApiResponse(code = 404, message = "Restaurant or payment method not found", response = Problem.class) })
-	void associate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
+	ResponseEntity<Void> associate(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
 			@ApiParam(value = "Payment method ID", example = "1", required = true) Long paymentMethodId);
 
 }

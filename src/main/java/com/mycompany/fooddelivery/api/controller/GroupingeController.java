@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +44,7 @@ public class GroupingeController implements GroupingeControllerOpenApi {
     private GroupingeInputDeconverter groupingeInputDeconverter;
     
     @GetMapping
-    public List<GroupingeDTO> list() {
+    public CollectionModel<GroupingeDTO> list() {
         List<Groupinge> allGroups = groupingeRepository.findAll();
         
         return groupingeDTOConverter.toCollectionModel(allGroups);

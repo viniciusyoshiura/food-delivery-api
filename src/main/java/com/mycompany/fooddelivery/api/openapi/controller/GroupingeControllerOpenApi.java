@@ -2,6 +2,8 @@ package com.mycompany.fooddelivery.api.openapi.controller;
 
 import java.util.List;
 
+import org.springframework.hateoas.CollectionModel;
+
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.GroupingeDTO;
 import com.mycompany.fooddelivery.api.model.input.GroupingeInput;
@@ -16,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 public interface GroupingeControllerOpenApi {
 
 	@ApiOperation("List of all groups")
-	List<GroupingeDTO> list();
+	CollectionModel<GroupingeDTO> list();
 
 	@ApiOperation("Search a group by ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid group ID", response = Problem.class),

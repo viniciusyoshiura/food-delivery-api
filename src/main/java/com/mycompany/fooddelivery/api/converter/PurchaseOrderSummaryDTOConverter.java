@@ -31,7 +31,7 @@ public class PurchaseOrderSummaryDTOConverter extends RepresentationModelAssembl
 		PurchaseOrderSummaryDTO purchaseOrderSummaryDTO = createModelWithId(purchaseOrder.getId(), purchaseOrder);
         modelMapper.map(purchaseOrder, purchaseOrderSummaryDTO);
         
-        purchaseOrderSummaryDTO.add(hateoasLinks.linkToPurchaseOrders());
+        purchaseOrderSummaryDTO.add(hateoasLinks.linkToPurchaseOrders("purchase-orders"));
         
         purchaseOrderSummaryDTO.getRestaurant().add(
         		hateoasLinks.linkToRestaurant(purchaseOrder.getRestaurant().getId()));

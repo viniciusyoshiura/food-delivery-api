@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,21 +37,36 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
 	public CollectionModel<UserDTO> list(@PathVariable Long restaurantId) {
 		Restaurant restaurant = restaurantRegistrationService.searchOrFail(restaurantId);
 		
-		return userDTOConverter.toCollectionModel(restaurant.getResponsibles())
-	            .removeLinks()
-	            .add(hateoasLinks.linkToRestaurantResponsibleUser((restaurantId)));
+		CollectionModel<UserDTO> usersDTO = userDTOConverter
+	            .toCollectionModel(restaurant.getResponsibles())
+	                .removeLinks()
+	                .add(hateoasLinks.linkToRestaurantResponsibleUser(restaurantId))
+	                .add(hateoasLinks.linkToRestaurantResponsibleAssociation(restaurantId, "associate"));
+		
+		usersDTO.getContent().stream().forEach(userDTO -> {
+			userDTO.add(hateoasLinks.linkToRestaurantResponsibleDisassociation(
+	                restaurantId, userDTO.getId(), "disassociate"));
+	    });
+		
+		return usersDTO;
+		
+//		return userDTOConverter.toCollectionModel(restaurant.getResponsibles())
+//	            .removeLinks()
+//	            .add(hateoasLinks.linkToRestaurantResponsibleUser((restaurantId)));
 	}
 
 	@DeleteMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void disassociate(@PathVariable Long restaurantId, @PathVariable Long userId) {
+	public ResponseEntity<Void> disassociate(@PathVariable Long restaurantId, @PathVariable Long userId) {
 		restaurantRegistrationService.disassociateResponsible(restaurantId, userId);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void associate(@PathVariable Long restaurantId, @PathVariable Long userId) {
+	public ResponseEntity<Void> associate(@PathVariable Long restaurantId, @PathVariable Long userId) {
 		restaurantRegistrationService.associateResponsible(restaurantId, userId);
+		return ResponseEntity.noContent().build();
 	}
 
 }

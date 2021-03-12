@@ -12,15 +12,20 @@ import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
 
 import com.mycompany.fooddelivery.api.controller.CityController;
+import com.mycompany.fooddelivery.api.controller.GroupingeController;
+import com.mycompany.fooddelivery.api.controller.GroupingePermissionController;
 import com.mycompany.fooddelivery.api.controller.KitchenController;
 import com.mycompany.fooddelivery.api.controller.PaymentMethodController;
+import com.mycompany.fooddelivery.api.controller.PermissionController;
 import com.mycompany.fooddelivery.api.controller.PurchaseOrderController;
 import com.mycompany.fooddelivery.api.controller.PurchaseOrderStatusFlowController;
 import com.mycompany.fooddelivery.api.controller.RestaurantController;
 import com.mycompany.fooddelivery.api.controller.RestaurantPaymentMethodController;
 import com.mycompany.fooddelivery.api.controller.RestaurantProductController;
+import com.mycompany.fooddelivery.api.controller.RestaurantProductPhotoController;
 import com.mycompany.fooddelivery.api.controller.RestaurantResponsibleUserController;
 import com.mycompany.fooddelivery.api.controller.StateController;
+import com.mycompany.fooddelivery.api.controller.StatisticsController;
 import com.mycompany.fooddelivery.api.controller.UserController;
 import com.mycompany.fooddelivery.api.controller.UserGroupingeController;
 
@@ -33,7 +38,10 @@ public class HateoasLinks {
 			new TemplateVariable("size", VariableType.REQUEST_PARAM),
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 	
-	public Link linkToPurchaseOrders() {
+	public static final TemplateVariables FIELDS_VARIABLES = new TemplateVariables(
+			new TemplateVariable("fields", VariableType.REQUEST_PARAM));     
+	
+	public Link linkToPurchaseOrders(String rel) {
 		TemplateVariables filterVariables = new TemplateVariables(
 				new TemplateVariable("clientId", VariableType.REQUEST_PARAM),
 				new TemplateVariable("restaurantId", VariableType.REQUEST_PARAM),
@@ -43,7 +51,7 @@ public class HateoasLinks {
 		String urlPurchaseOrders = linkTo(PurchaseOrderController.class).toUri().toString();
 		
 		return new Link(UriTemplate.of(urlPurchaseOrders, 
-				PAGE_VARIABLES.concat(filterVariables)), "orders");
+				PAGE_VARIABLES.concat(filterVariables)), rel);
 	}
 	
 	public Link linkToPurchaseOrderConfirmation(String purchaseOrderUuid, String rel) {
@@ -71,7 +79,9 @@ public class HateoasLinks {
 	}
 	
 	public Link linkToRestaurants(String rel) {
-	    return linkTo(RestaurantController.class).withRel(rel);
+		String restaurantsUrl = linkTo(RestaurantController.class).toUri().toString();
+	    
+	    return new Link(UriTemplate.of(restaurantsUrl, FIELDS_VARIABLES), rel);
 	}
 
 	public Link linkToRestaurants() {
@@ -82,7 +92,37 @@ public class HateoasLinks {
 	    return linkTo(methodOn(RestaurantPaymentMethodController.class)
 	            .list(restaurantId)).withRel(rel);
 	}
+	
+	public Link linkToRestaurantPaymentMethod(Long restaurantId) {
+	    return linkToRestaurantPaymentMethod(restaurantId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToRestaurantPaymentMethodDisassociation(
+			Long restaurantId, Long paymentMethodId, String rel) {
+		
+		return linkTo(methodOn(RestaurantPaymentMethodController.class)
+				.disassociate(restaurantId, paymentMethodId)).withRel(rel);
+	}
+	
+	public Link linkToRestaurantPaymentMethodAssociation(
+			Long restaurantId, String rel) {
+		
+		return linkTo(methodOn(RestaurantPaymentMethodController.class)
+				.associate(restaurantId, null)).withRel(rel);
+	}
 
+	public Link linkToRestaurantResponsibleDisassociation(
+		Long restaurantId, Long userId, String rel) {
+
+	    return linkTo(methodOn(RestaurantResponsibleUserController.class)
+	            .disassociate(restaurantId, userId)).withRel(rel);
+	}
+
+	public Link linkToRestaurantResponsibleAssociation(Long restaurantId, String rel) {
+	    return linkTo(methodOn(RestaurantResponsibleUserController.class)
+	            .associate(restaurantId, null)).withRel(rel);
+	}
+	
 	public Link linkToRestaurantResponsibleUser(Long restaurantId, String rel) {
 	    return linkTo(methodOn(RestaurantResponsibleUserController.class)
 	            .list(restaurantId)).withRel(rel);
@@ -200,6 +240,24 @@ public class HateoasLinks {
 	    return linkToProduct(restaurantId, productId, IanaLinkRelations.SELF.value());
 	}
 
+	public Link linkToProducts(Long restaurantId, String rel) {
+	    return linkTo(methodOn(RestaurantProductController.class)
+	            .list(restaurantId, null)).withRel(rel);
+	}
+
+	public Link linkToProducts(Long restaurantId) {
+	    return linkToProducts(restaurantId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToProductPhoto(Long restaurantId, Long productId, String rel) {
+	    return linkTo(methodOn(RestaurantProductPhotoController.class)
+	            .search(restaurantId, productId)).withRel(rel);
+	}
+
+	public Link linkToProductPhoto(Long restaurantId, Long productId) {
+	    return linkToProductPhoto(restaurantId, productId, IanaLinkRelations.SELF.value());
+	}
+	
 	public Link linkToKitchens(String rel) {
 	    return linkTo(KitchenController.class).withRel(rel);
 	}
@@ -207,5 +265,74 @@ public class HateoasLinks {
 	public Link linkToKitchens() {
 	    return linkToKitchens(IanaLinkRelations.SELF.value());
 	}
+
+	public Link linkToPaymentMethods(String rel) {
+	    return linkTo(PaymentMethodController.class).withRel(rel);
+	}
+
+	public Link linkToPaymentMethods() {
+	    return linkToPaymentMethods(IanaLinkRelations.SELF.value());
+	} 
 	
+	public Link linkToGroupinges(String rel) {
+	    return linkTo(GroupingeController.class).withRel(rel);
+	}
+
+	public Link linkToGroupinges() {
+	    return linkToGroupinges(IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGroupingePermissions(Long groupingeIde, String rel) {
+	    return linkTo(methodOn(GroupingePermissionController.class)
+	            .list(groupingeIde)).withRel(rel);
+	}
+	
+	public Link linkToPermissions(String rel) {
+	    return linkTo(PermissionController.class).withRel(rel);
+	}
+
+	public Link linkToPermissions() {
+	    return linkToPermissions(IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGroupingePermissions(Long groupId) {
+	    return linkToGroupingePermissions(groupId, IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGroupingePermissionAssociation(Long groupId, String rel) {
+	    return linkTo(methodOn(GroupingePermissionController.class)
+	            .associate(groupId, null)).withRel(rel);
+	}
+
+	public Link linkToGroupingePermissionDisassociation(Long groupId, Long permissionId, String rel) {
+	    return linkTo(methodOn(GroupingePermissionController.class)
+	            .disassociate(groupId, permissionId)).withRel(rel);
+	}
+	
+	public Link linkToUserGroupingeAssociation(Long userId, String rel) {
+	    return linkTo(methodOn(UserGroupingeController.class)
+	            .associate(userId, null)).withRel(rel);
+	}
+
+	public Link linkToUserGroupingeDisassociation(Long userId, Long groupId, String rel) {
+	    return linkTo(methodOn(UserGroupingeController.class)
+	            .disassociate(userId, groupId)).withRel(rel);
+	}
+	
+	public Link linkToStatistics(String rel) {
+	    return linkTo(StatisticsController.class).withRel(rel);
+	}
+
+	public Link linkToStatisticsDailySales(String rel) {
+	    TemplateVariables filterVariables = new TemplateVariables(
+	            new TemplateVariable("restaurantId", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataRegisterStart", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataRegisterEnd", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+	    
+	    String urlOrders = linkTo(methodOn(StatisticsController.class)
+	            .queryDailySales(null, null)).toUri().toString();
+	    
+	    return new Link(UriTemplate.of(urlOrders, filterVariables), rel);
+	}
 }

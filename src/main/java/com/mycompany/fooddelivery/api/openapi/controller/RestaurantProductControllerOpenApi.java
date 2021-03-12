@@ -2,6 +2,8 @@ package com.mycompany.fooddelivery.api.openapi.controller;
 
 import java.util.List;
 
+import org.springframework.hateoas.CollectionModel;
+
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.ProductDTO;
 import com.mycompany.fooddelivery.api.model.input.ProductInput;
@@ -18,8 +20,8 @@ public interface RestaurantProductControllerOpenApi {
 	@ApiOperation("Products list of a restaurant")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid restaurant ID", response = Problem.class),
 			@ApiResponse(code = 404, message = "Restaurant not found", response = Problem.class) })
-	List<ProductDTO> list(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
-			@ApiParam(value = "Indicates whether or not to include inactive products in the listing result", example = "false", defaultValue = "false") boolean includeInactives);
+	CollectionModel<ProductDTO> list(@ApiParam(value = "Restaurant ID", example = "1", required = true) Long restaurantId,
+			@ApiParam(value = "Indicates whether or not to include inactive products in the listing result", example = "false", defaultValue = "false") Boolean includeInactives);
 
 	@ApiOperation("Searchs a product of a restaurant")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid Resturant or product ID", response = Problem.class),

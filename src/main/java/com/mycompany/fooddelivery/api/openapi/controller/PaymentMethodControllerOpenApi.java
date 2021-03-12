@@ -1,9 +1,9 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiResponses;
 public interface PaymentMethodControllerOpenApi {
 
 	@ApiOperation("Lists all payment methods")
-	ResponseEntity<List<PaymentMethodDTO>> list(ServletWebRequest request);
+	ResponseEntity<CollectionModel<PaymentMethodDTO>> list(ServletWebRequest request);
 
 	@ApiOperation("Searchs a payment method by ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "Invalid payment method ID", response = Problem.class),

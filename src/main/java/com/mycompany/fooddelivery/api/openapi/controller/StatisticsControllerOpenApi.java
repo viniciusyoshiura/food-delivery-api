@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.mycompany.fooddelivery.api.controller.StatisticsController.StatisticsDTO;
 import com.mycompany.fooddelivery.api.model.dto.DailySaleDTO;
 import com.mycompany.fooddelivery.domain.filter.DailySaleFilter;
 
@@ -27,5 +28,8 @@ public interface StatisticsControllerOpenApi {
 			@ApiParam(value = "Time shift to be considered in the query in relation to UTC", defaultValue = "+00:00") String timeOffset);
 
 	public ResponseEntity<byte[]> queryDailySalesPdf(DailySaleFilter filter, String timeOffset);
+	
+	@ApiOperation(value = "Statistics", hidden = true)
+	StatisticsDTO statistics();
 
 }
