@@ -10,7 +10,7 @@ import lombok.Setter;
 @ApiModel("Pageable")
 @Setter
 @Getter
-public class PageableModelOpenApi {
+public class PageableDTOOpenApi {
 
 	@ApiModelProperty(example = "0", value = "Page number (starts with 0)")
 	private int page;

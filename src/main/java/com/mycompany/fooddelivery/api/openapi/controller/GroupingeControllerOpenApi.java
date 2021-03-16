@@ -1,7 +1,5 @@
 package com.mycompany.fooddelivery.api.openapi.controller;
 
-import java.util.List;
-
 import org.springframework.hateoas.CollectionModel;
 
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;

@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Restaurants")
 public interface RestaurantControllerOpenApi {
@@ -30,6 +31,7 @@ public interface RestaurantControllerOpenApi {
 	@ApiOperation(value = "List of restaurants", response = RestaurantSummaryDTOOpenApi.class)
 	CollectionModel<RestaurantBasicDTO> list();
 	
+	@ApiIgnore
 	@ApiOperation(value = "Lista of restaurants", hidden = true)
 	CollectionModel<RestaurantOnlyNameDTO> listOnlyNames(); 
 	

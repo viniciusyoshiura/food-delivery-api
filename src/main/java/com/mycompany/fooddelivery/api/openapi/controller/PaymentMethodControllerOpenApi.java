@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
 import com.mycompany.fooddelivery.api.model.dto.PaymentMethodDTO;
 import com.mycompany.fooddelivery.api.model.input.PaymentMethodInput;
+import com.mycompany.fooddelivery.api.openapi.model.PaymentMethodsDTOOpenApi;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "Payment methods")
 public interface PaymentMethodControllerOpenApi {
 
-	@ApiOperation("Lists all payment methods")
+	@ApiOperation(value = "Lists all payment methods", response = PaymentMethodsDTOOpenApi.class)
 	ResponseEntity<CollectionModel<PaymentMethodDTO>> list(ServletWebRequest request);
 
 	@ApiOperation("Searchs a payment method by ID")

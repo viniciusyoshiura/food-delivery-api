@@ -1,10 +1,31 @@
 package com.mycompany.fooddelivery.api.openapi.model;
 
+import java.util.List;
+
+import org.springframework.hateoas.Links;
+
 import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderSummaryDTO;
 
 import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@ApiModel("PurchaseOrderSummaryDTO")
-public class PurchaseOrdersDTOOpenApi extends PagedModelOpenApi<PurchaseOrderSummaryDTO> {
+@ApiModel("PurchaseOrdersSummaryDTO")
+@Getter
+@Setter
+public class PurchaseOrdersDTOOpenApi {
 
+	private PurchaseOrdersEmbeddedDTOOpenApi _embedded;
+    private Links _links;
+    private PageDTOOpenApi page;
+    
+    @ApiModel("PurchaseOrdersEmbeddedDTOOpenApi")
+    @Data
+    public class PurchaseOrdersEmbeddedDTOOpenApi {
+        
+        private List<PurchaseOrderSummaryDTO> purchaseOrders;
+        
+    }   
+	
 }
