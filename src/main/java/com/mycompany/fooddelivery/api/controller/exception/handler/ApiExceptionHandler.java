@@ -56,7 +56,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		log.error(e.getMessage(), e);
 
-		
 		Problem problem = createProblemBuilder(status, problemType, detail, detail, null);
 
 		return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
