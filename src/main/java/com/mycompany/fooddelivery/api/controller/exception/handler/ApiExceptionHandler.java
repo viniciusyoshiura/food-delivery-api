@@ -36,6 +36,9 @@ import com.mycompany.fooddelivery.domain.exception.BusinessException;
 import com.mycompany.fooddelivery.domain.exception.EntityInUseException;
 import com.mycompany.fooddelivery.domain.exception.EntityNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -51,7 +54,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
 		String detail = e.getMessage();
 		
-		e.printStackTrace();
+		log.error(e.getMessage(), e);
 
 		Problem problem = createProblemBuilder(status, problemType, detail, detail, null);
 
