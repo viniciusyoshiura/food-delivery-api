@@ -24,28 +24,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.mycompany.fooddelivery.api.controller.exception.handler.Problem;
-import com.mycompany.fooddelivery.api.model.dto.CityDTO;
-import com.mycompany.fooddelivery.api.model.dto.GroupingeDTO;
-import com.mycompany.fooddelivery.api.model.dto.KitchenDTO;
-import com.mycompany.fooddelivery.api.model.dto.PaymentMethodDTO;
-import com.mycompany.fooddelivery.api.model.dto.PermissionDTO;
-import com.mycompany.fooddelivery.api.model.dto.ProductDTO;
-import com.mycompany.fooddelivery.api.model.dto.PurchaseOrderSummaryDTO;
-import com.mycompany.fooddelivery.api.model.dto.RestaurantBasicDTO;
-import com.mycompany.fooddelivery.api.model.dto.StateDTO;
-import com.mycompany.fooddelivery.api.model.dto.UserDTO;
-import com.mycompany.fooddelivery.api.openapi.model.CitiesDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.GroupingesDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.KitchensDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.LinksDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.PageableDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.PaymentMethodsDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.PermissionsDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.ProductsDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.PurchaseOrdersDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.RestaurantsBasicDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.StatesDTOOpenApi;
-import com.mycompany.fooddelivery.api.openapi.model.UsersDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.model.dto.CityDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.GroupingeDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.KitchenDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.PaymentMethodDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.PermissionDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.ProductDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.PurchaseOrderSummaryDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.RestaurantBasicDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.StateDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.UserDTO;
+import com.mycompany.fooddelivery.api.v1.openapi.model.CitiesDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.GroupingesDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.KitchensDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.LinksDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.PageableDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.PaymentMethodsDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.PermissionsDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.ProductsDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.PurchaseOrdersDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.RestaurantsBasicDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.StatesDTOOpenApi;
+import com.mycompany.fooddelivery.api.v1.openapi.model.UsersDTOOpenApi;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -81,10 +81,13 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		// ---------- alternateTypeRules - adds model substitution rules
 		// ---------- ignoredParameterTypes - Ignore Parameter type
 		// ---------- globalOperationParameters - Configure global parameters, e.g., Squiggly parameters in PurchaseOrderController
+		// ---------- PathSelectors.ant("/v1/**") - All v1 routes
+		// ---------- Specify the current version of the API
 		return new Docket(DocumentationType.SWAGGER_2)
+			.groupName("V1")
 			.select()
 				.apis(RequestHandlerSelectors.basePackage("com.mycompany.fooddelivery.api"))
-				.paths(PathSelectors.any())
+				.paths(PathSelectors.ant("/v1/**"))
 			.build()
 			.useDefaultResponseMessages(false)
 			.globalResponseMessage(RequestMethod.GET, globalGetResponse())

@@ -11,7 +11,7 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.stereotype.Repository;
 
-import com.mycompany.fooddelivery.api.model.dto.DailySaleDTO;
+import com.mycompany.fooddelivery.api.v1.model.dto.DailySaleDTO;
 import com.mycompany.fooddelivery.domain.filter.DailySaleFilter;
 import com.mycompany.fooddelivery.domain.model.PurchaseOrder;
 import com.mycompany.fooddelivery.domain.model.enumerator.StatusPurchaseOrder;

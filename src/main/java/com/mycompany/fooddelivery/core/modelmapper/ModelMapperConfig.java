@@ -4,8 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.mycompany.fooddelivery.api.model.dto.AddressDTO;
-import com.mycompany.fooddelivery.api.model.input.ItemPurchaseOrderInput;
+import com.mycompany.fooddelivery.api.v1.model.dto.AddressDTO;
+import com.mycompany.fooddelivery.api.v1.model.input.ItemPurchaseOrderInput;
 import com.mycompany.fooddelivery.domain.model.Address;
 import com.mycompany.fooddelivery.domain.model.ItemPurchaseOrder;
 

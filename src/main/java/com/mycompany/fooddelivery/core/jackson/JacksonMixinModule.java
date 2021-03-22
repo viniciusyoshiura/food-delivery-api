@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.mycompany.fooddelivery.api.model.mixin.CityMixin;
-import com.mycompany.fooddelivery.api.model.mixin.KitchenMixin;
-import com.mycompany.fooddelivery.api.model.mixin.RestaurantMixin;
+import com.mycompany.fooddelivery.api.v1.model.mixin.CityMixin;
+import com.mycompany.fooddelivery.api.v1.model.mixin.KitchenMixin;
+import com.mycompany.fooddelivery.api.v1.model.mixin.RestaurantMixin;
 import com.mycompany.fooddelivery.domain.model.City;
 import com.mycompany.fooddelivery.domain.model.Kitchen;
 import com.mycompany.fooddelivery.domain.model.Restaurant;
